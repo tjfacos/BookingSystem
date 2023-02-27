@@ -1,5 +1,5 @@
 [package]
-name = "BookingSystemServer"
+name = "booking_system_server"
 version = "0.1.0"
 edition = "2021"
 
