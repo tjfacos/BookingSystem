@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+
+	"./database/BookingSystemDB"
 )
 
 func getPort() string {
@@ -18,13 +20,16 @@ func getPort() string {
 }
 
 func main() {
-	app := fiber.New()
+	
+	test()
+	
+	// app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hello, Railway!",
-		})
-	})
+	// app.Get("/", func(c *fiber.Ctx) error {
+	// 	return c.JSON(fiber.Map{
+	// 		"message": "Hello, Railway!",
+	// 	})
+	// })
 
-	app.Listen(getPort())
+	// app.Listen(getPort())
 }
