@@ -29,7 +29,7 @@ const Login = () => {
     }
 
     return (
-        <section>
+        <section className='login'>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
             <h1>Sign In</h1>
             <form onSubmit={handleSubmit}>
