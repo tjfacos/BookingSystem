@@ -20,9 +20,10 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
-statement = "INSERT INTO Events (name, host, attendee_no) values (%s, %s, %s)"
-val = ("localEvent", 7, 13)
+def test():
+    statement = "INSERT INTO Events (name, host, attendee_no) values (%s, %s, %s)"
+    val = ("localEvent", 7, 13)
 
-cursor.execute(statement, val)
+    cursor.execute(statement, val)
 
-db.commit()
+    db.commit()
