@@ -6,6 +6,9 @@ from flask import *
 from auth import auth
 
 app = Flask(__name__)
+app.config.from_mapping(
+        SECRET_KEY='dev',
+    )
 
 app.register_blueprint(
     auth.bp

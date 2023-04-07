@@ -5,14 +5,10 @@ import mysql.connector
 
 load_dotenv()
 
-print(os.getenv("HOST"))
-print(os.getenv("USERNAME"))
-print(os.getenv("PASSWORD"))
-
 
 db = mysql.connector.connect(
     host= os.getenv("HOST"),
-    user=os.getenv("USERNAME"),
+    user=os.getenv("USER"),
     passwd= os.getenv("PASSWORD"),
     ssl_verify_identity=True,
     ssl_ca="cacert.pem"
@@ -20,10 +16,50 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
-def test():
-    statement = "INSERT INTO Events (name, host, attendee_no) values (%s, %s, %s)"
-    val = ("localEvent", 7, 13)
+class DB():
+    
+    @staticmethod
+    def InsertUser(info : dict):
+        
+        """
+        Info must always include
+        - email
+        - password
+        - type
+        - name
+        
+        If user is a guest, info must also include
+        - DoB
+        """
+        
+        
+        
+        account_sql = "INSERT INTO Accounts (email, password, type) VALUES (%s, %s, %s)" # email, password, type 
+        # NB: Account must be created before user, then set user using account PK, then add user onto account
 
-    cursor.execute(statement, val)
+        cursor.execute(account_sql, (
+            info["email"],
+            info["password"],
+            info["type"]
+        ))
 
-    db.commit()
+        db.commit()
+
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        accountPK = cursor.fetchall()[0][0]
+
+        if info["type"] == 'host':
+            user_sql = "INSERT INTO HostUsers (name, account) VALUES (%s, %s)"
+            val = (info["name"], accountPK)
+        else:
+            user_sql = "INSERT INTO GuestUsers (name, account, DoB) VALUES (%s, %s, %s)"
+            val = (info["name"], accountPK, info["DoB"])
+        
+        cursor.execute(user_sql, val)
+        db.commit()
+
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        userPK = cursor.fetchall()[0][0]
+
+        cursor.execute(f"UPDATE Accounts SET user = {userPK} where AccountID = {accountPK}")
+        db.commit()
