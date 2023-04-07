@@ -20,18 +20,39 @@
     <div>
         
         <h1 id="title">Register your New Account</h1>
+        <h3 id="register-link">
+            Already have an account? <a href="{{ url_for("auth.sign_in") }}">Sign In</a> 
+        </h3>
+        
+        {% for message in get_flashed_messages() %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+        
         <form method="post">
+            
+            <select name="type" id="user_type" oninput="CheckType()">
+                <option value="guest" selected>Guest</option>
+                <option value="host">Host</option>
+            </select>
+            
+            
             <input type="email" name="email" id="user_email" placeholder="Email" required>
+            <input type="text" name="name" id="name" placeholder="Name" required>
+            
+            <input type="text" name="DoB" placeholder="Date of Birth" id="DoB" 
+            onfocus="(this.type='date')" 
+            required>
+            
+            
             <input type="password" name="password" id="user_pwd" placeholder="Password" required oninput="CheckConfirmPassword()">
             <input type="password" name="confirm_password" id="confirm_pwd" placeholder="Confirm Password" required oninput="CheckConfirmPassword()">
             <button id="register_submit" disabled="true">Submit</button>
 
         </form>
-        <h3 id="register-link">
-            Already have an account? <a href="{{ url_for("auth.sign_in") }}">Sign In</a> 
-        </h3>
-
+        
+        
     </div>
-
-    </body>
+    
+    
+</body>
 </html>

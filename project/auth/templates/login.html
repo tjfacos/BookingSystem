@@ -18,20 +18,16 @@
     <div>
         
         <h1 id="title">Sign In to Booking System</h1>
+        
         <form method="post">
             <input type="email" name="email" id="user_email" placeholder="Email" required>
             <input type="password" name="password" id="user_pwd" placeholder="Password" required>
-            <button>Submit</button>
-
+            <button type="submit">Submit</button>
         </form>
+
         <h3 id="register-link">
             Don't have an account? <a href="{{ url_for("auth.register") }}">Register</a> 
         </h3>
-        <!-- {% for message in get_flashed_messages() %}
-        <p>
-            {{ message }}
-        </p>
-        {% endfor %} -->
     </div>
 
     </body>
