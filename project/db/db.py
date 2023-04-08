@@ -5,7 +5,7 @@ import mysql.connector
 
 load_dotenv()
 
-
+UUID = "UNHEX(REPLACE(UUID(), '-', ''))"
 
 def InsertUser(info : dict) -> bool:
     db = mysql.connector.connect(
@@ -31,37 +31,33 @@ def InsertUser(info : dict) -> bool:
     """
     
     
-    account_sql = "INSERT INTO Accounts (email, password, type) VALUES (%s, %s, %s)" # email, password, type 
-    # NB: Account must be created before user, then set user using account PK, then add user onto account
+    account_sql = "INSERT INTO Accounts (email, password, type, AccountID, user) VALUES (%s, %s, %s, " + UUID + ", " + UUID + ")" # email, password, type 
 
     cursor.execute(account_sql, (
         info["email"],
         info["password"],
-        info["type"]
+        info["type"],
     ))
 
     db.commit()
 
-    cursor.execute("SELECT LAST_INSERT_ID()")
-    accountPK = cursor.fetchall()[0][0]
+    cursor.execute(f"SELECT AccountID, user FROM Accounts where email = '{ info['email'] }'")
+    results = cursor.fetchall()
+    accountPK = results[0][0]
+    userPK = results[0][1]
 
     if info["type"] == 'host':
-        user_sql = "INSERT INTO HostUsers (name, account) VALUES (%s, %s)"
-        val = (info["name"], accountPK)
+        user_sql = "INSERT INTO HostUsers (name, hostID, account) VALUES (%s, %s, %s)"
+        val = (info["name"], userPK, accountPK)
     else:
-        user_sql = "INSERT INTO GuestUsers (name, account, DoB) VALUES (%s, %s, %s)"
-        val = (info["name"], accountPK, info["DoB"])
+        user_sql = "INSERT INTO GuestUsers (name, DoB, guestID, account) VALUES (%s, %s, %s, %s)"
+        val = (info["name"], info["DoB"], userPK, accountPK)
     
     cursor.execute(user_sql, val)
     db.commit()
 
-    cursor.execute("SELECT LAST_INSERT_ID()")
-    userPK = cursor.fetchall()[0][0]
-
-    cursor.execute(f"UPDATE Accounts SET user = {userPK} where AccountID = {accountPK}")
-    db.commit()
-
     return True
+
 
 def AccountExists(email: str) -> bool:
 
