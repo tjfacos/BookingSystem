@@ -3,7 +3,7 @@ from flask import *
 
 # from db import *
 
-from auth import auth
+from blueprints.auth import auth
 
 app = Flask(__name__)
 app.config.from_mapping(
