@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 load_dotenv()
 
-UUID = "UNHEX(REPLACE(UUID(), '-', ''))"
+UUID = "UUID()"
 
 def CreateConnection():
     db = mysql.connector.connect(
@@ -49,14 +49,9 @@ def InsertUser(info : dict) -> bool:
     
     db, cursor = CreateConnection()
     
-    account_sql = "INSERT INTO Accounts (email, password, type, AccountID, user) VALUES (%s, %s, %s, " + UUID + ", " + UUID + ")" # email, password, type 
+    account_sql = f"INSERT INTO Accounts (email, password, type, AccountID, user) VALUES ('{info['email']}', '{generate_password_hash(info['password'])}', '{info['type']}', {UUID}, {UUID})" 
 
-    cursor.execute(account_sql, (
-        info["email"],
-        generate_password_hash(info["password"]),
-        info["type"],
-    ))
-
+    cursor.execute(account_sql)
     db.commit()
 
     cursor.execute(f"SELECT AccountID, user FROM Accounts where email = '{ info['email'] }'")

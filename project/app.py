@@ -14,11 +14,11 @@ def RegisterBlueprints(blueprints: list[Blueprint]):
         app.register_blueprint(bp)
 
 
+
 RegisterBlueprints([
     auth.bp,
     home.bp
 ])
-
 
 @app.route('/favicon.ico')
 def favicon():

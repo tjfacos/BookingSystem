@@ -15,27 +15,25 @@ bp = Blueprint(
 
 def CreateNewSession(email):
     session.clear()
-    session["account_id"], session["user_id"], session["type"] = db.getUserAccount()
-    return redirect(url_for("home"))
+    session["account_id"], session["user_id"], session["type"] = db.getUserAccount(email)
+    print(session["account_id"])
+    print(session["user_id"])
+    print(session["type"])
 
 
 def authorise(email, password):
     if db.AuthoriseUser(email, password):
-        flash("Sign-in Successful!")
-        CreateNewSession(email)
+        print("Sign in sucessfull!")
+        return True
     else:
         flash("Sorry! Invalid email or password. Please try again.")
+        return False
 
 def registerNewUser(**properties): 
 
-    # Function to check
-    # - Check user doesn't already exist (check email not already registered, and alert user if so)
-    # - If user doesn't exist, insert details into database (securely)
-    # - Redirect user to their account page / dashboard
-    
     if db.AccountExists(properties["email"]):
         flash("Sorry! An account for this email already exists!")
-        return
+        return render_template("register.html")
 
 
     info = {
@@ -52,19 +50,25 @@ def registerNewUser(**properties):
 
     CreateNewSession(properties["email"])
 
-    
+    return redirect(url_for("home.home"))
+
+
 
 @bp.route("/sign-in", methods=["GET", "POST"])
-
 def sign_in():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
 
-        authorise(
+        if authorise(
             email, 
             password
-        )
+        ):
+            # print("Attempting redirect...")
+            
+            CreateNewSession(email)   
+            
+            return redirect(url_for("home.home"))
 
 
     return render_template("login.html")
@@ -72,13 +76,10 @@ def sign_in():
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
-    # print("Register Request")
     if request.method == "POST":
-        # print("POST!!!!!")
         if request.form["type"] == "host":
-            # print("Registering host...")
             
-            registerNewUser(
+            return registerNewUser(
                 email = request.form["email"],
                 password = request.form["password"],
                 name = request.form["name"],
@@ -86,9 +87,7 @@ def register():
             )
         
         else:
-            # print("Registering guest...")
-
-            registerNewUser(
+            return registerNewUser(
                 email = request.form["email"],
                 password = request.form["password"],
                 name = request.form["name"],

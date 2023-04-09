@@ -15,4 +15,8 @@ bp = Blueprint(
 
 @bp.route("/")
 def home():
+    print(session["account_id"])
+    print(session["user_id"])
+    print(session["type"])
     return "Hello, home!"
+    
