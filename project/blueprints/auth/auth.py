@@ -1,7 +1,7 @@
 # AUTH MODULE
 
 from flask import *
-from db import db
+from db import auth as db
 
 import functools
 
@@ -64,7 +64,6 @@ def sign_in():
             email, 
             password
         ):
-            # print("Attempting redirect...")
             
             CreateNewSession(email)   
             
@@ -96,3 +95,29 @@ def register():
             )
 
     return render_template("register.html")
+
+@bp.route("/sign-out")
+def sign_out():
+    session.clear()
+    return redirect(url_for("home.home"))
+
+@bp.before_app_request
+def load_user():
+    account_id = session.get("account_id")
+    if account_id:
+        user_id = session.get("user_id")
+        type = session.get("type")
+        g.user = (account_id, user_id, type)
+    else:
+        g.user = None
+
+def login_required(view):
+    
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view

@@ -1,7 +1,11 @@
 # HOME MODULE (mounted at root [/] )
 
+# This is contain a blueprint for 
+# - the landing page (/), with the 5 most recent events
+# - The search results page
+
 from flask import *
-from db import db
+from db import auth
 
 import functools
 
@@ -15,8 +19,8 @@ bp = Blueprint(
 
 @bp.route("/")
 def home():
-    print(session["account_id"])
-    print(session["user_id"])
-    print(session["type"])
+    if g.user:
+        return str(g.user)
+    
     return "Hello, home!"
     
