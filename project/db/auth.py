@@ -1,24 +1,8 @@
-from dotenv import load_dotenv
-import os
-import mysql.connector
 from werkzeug.security import check_password_hash, generate_password_hash
 
-load_dotenv()
-
+from db.connection import *
+ 
 UUID = "UUID()"
-
-def CreateConnection():
-    db = mysql.connector.connect(
-        host= os.getenv("HOST"),
-        user=os.getenv("USER"),
-        passwd= os.getenv("PASSWORD"),
-        ssl_verify_identity=True,
-        ssl_ca="cacert.pem"
-    )
-
-    cursor = db.cursor()
-
-    return db, cursor
 
 def AuthoriseUser(email, password):
     """Checks email and password are correct"""

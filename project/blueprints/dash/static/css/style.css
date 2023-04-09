@@ -1,0 +1,87 @@
+:root * {
+    font-family: 'Quicksand', Courier, monospace;
+    font-size: 16px;
+    background-color: aliceblue;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin-top: 5rem;
+}
+
+#navbar {
+    height: 5rem;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#home-box {
+    height: 5rem;
+    width: 15%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+#home-box h2 {
+    margin: 2rem auto;
+    font-size: 1rem;
+}
+
+#page-name {
+    align-self: center;
+}
+
+#title {
+    margin: 1rem auto;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.form-container {
+    width: 80%;
+    height: 90%;
+    margin: 5rem 5%;
+    padding: 2rem;
+    border: 5px solid grey;
+}
+
+form input {
+    width: 90%;
+    height: 20%;
+    font-size: 2rem;
+    margin: 1vh;
+    border-radius: 5px;
+    background-color: azure;
+}
+
+.section-header {
+    font-size: 3rem;
+}
+
+.server-message {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-left: 5rem;
+}
+
+button {
+    height: 50px;
+    width: 150px;
+    border-radius: 10px;
+}
+
+button:hover {
+    border: 5px solid blue;
+    box-shadow: 5px 5px black;
+}

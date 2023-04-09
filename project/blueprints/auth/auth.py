@@ -107,7 +107,11 @@ def load_user():
     if account_id:
         user_id = session.get("user_id")
         type = session.get("type")
-        g.user = (account_id, user_id, type)
+        g.user = {
+            "account_id": account_id, 
+            "user_id": user_id, 
+            "type": type
+        }
     else:
         g.user = None
 
@@ -116,7 +120,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.sign_in'))
 
         return view(**kwargs)
 

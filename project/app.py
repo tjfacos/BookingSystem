@@ -3,6 +3,7 @@ from flask import *
 
 from blueprints.auth import auth
 from blueprints.home import home
+from blueprints.dash import dash
 
 app = Flask(__name__)
 app.config.from_mapping(
@@ -17,7 +18,8 @@ def RegisterBlueprints(blueprints: list[Blueprint]):
 
 RegisterBlueprints([
     auth.bp,
-    home.bp
+    home.bp,
+    dash.bp
 ])
 
 @app.route('/favicon.ico')
