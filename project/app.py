@@ -1,18 +1,24 @@
 import os
 from flask import *
 
-# from db import *
-
 from blueprints.auth import auth
+from blueprints.home import home
 
 app = Flask(__name__)
 app.config.from_mapping(
         SECRET_KEY='dev',
     )
 
-app.register_blueprint(
-    auth.bp
-)
+def RegisterBlueprints(blueprints: list[Blueprint]):
+    for bp in blueprints:
+        app.register_blueprint(bp)
+
+
+RegisterBlueprints([
+    auth.bp,
+    home.bp
+])
+
 
 @app.route('/favicon.ico')
 def favicon():

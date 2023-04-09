@@ -1,7 +1,6 @@
 # AUTH MODULE
 
 from flask import *
-from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 
 import functools
@@ -14,8 +13,18 @@ bp = Blueprint(
     static_folder="static"
 )
 
+def CreateNewSession(email):
+    session.clear()
+    session["account_id"], session["user_id"], session["type"] = db.getUserAccount()
+    return redirect(url_for("home"))
+
+
 def authorise(email, password):
-    print(email, password)
+    if db.AuthoriseUser(email, password):
+        flash("Sign-in Successful!")
+        CreateNewSession(email)
+    else:
+        flash("Sorry! Invalid email or password. Please try again.")
 
 def registerNewUser(**properties): 
 
@@ -31,7 +40,7 @@ def registerNewUser(**properties):
 
     info = {
         "email": properties["email"],
-        "password": generate_password_hash(properties["password"]),
+        "password": properties["password"],
         "type": properties["type"],
         "name": properties["name"]
     }
@@ -39,9 +48,10 @@ def registerNewUser(**properties):
     if info["type"] == "guest":
         info["DoB"] = properties["DoB"]
 
-    status = db.InsertUser(info)
+    db.InsertUser(info)
 
-    print(status)
+    CreateNewSession(properties["email"])
+
     
 
 @bp.route("/sign-in", methods=["GET", "POST"])

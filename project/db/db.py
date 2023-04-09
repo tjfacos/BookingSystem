@@ -1,13 +1,13 @@
 from dotenv import load_dotenv
 import os
 import mysql.connector
-
+from werkzeug.security import check_password_hash, generate_password_hash
 
 load_dotenv()
 
 UUID = "UNHEX(REPLACE(UUID(), '-', ''))"
 
-def InsertUser(info : dict) -> bool:
+def CreateConnection():
     db = mysql.connector.connect(
         host= os.getenv("HOST"),
         user=os.getenv("USER"),
@@ -17,7 +17,24 @@ def InsertUser(info : dict) -> bool:
     )
 
     cursor = db.cursor()
+
+    return db, cursor
+
+def AuthoriseUser(email, password):
+    """Checks email and password are correct"""
     
+    db, cursor = CreateConnection()
+    
+    cursor.execute(f"SELECT password FROM Accounts WHERE email = '{email}'")
+    results = cursor.fetchone()
+    
+    if not results:
+        return False
+    
+    return check_password_hash(results[0], password)
+
+
+def InsertUser(info : dict) -> bool:
     """
 
     Info must always include
@@ -30,12 +47,13 @@ def InsertUser(info : dict) -> bool:
     - DoB
     """
     
+    db, cursor = CreateConnection()
     
     account_sql = "INSERT INTO Accounts (email, password, type, AccountID, user) VALUES (%s, %s, %s, " + UUID + ", " + UUID + ")" # email, password, type 
 
     cursor.execute(account_sql, (
         info["email"],
-        info["password"],
+        generate_password_hash(info["password"]),
         info["type"],
     ))
 
@@ -60,16 +78,13 @@ def InsertUser(info : dict) -> bool:
 
 
 def AccountExists(email: str) -> bool:
-
-    db = mysql.connector.connect(
-        host= os.getenv("HOST"),
-        user=os.getenv("USER"),
-        passwd= os.getenv("PASSWORD"),
-        ssl_verify_identity=True,
-        ssl_ca="cacert.pem"
-    )
-
-    cursor = db.cursor()
+    db, cursor = CreateConnection()
 
     cursor.execute(f"SELECT * FROM Accounts WHERE email='{email}'")
     return bool(cursor.fetchall())
+
+def getUserAccount(email) -> tuple[str, str, str]:
+    db, cursor = CreateConnection()
+    
+    cursor.execute(f"SELECT AccountID, user, type FROM Accounts WHERE email='{email}'")
+    return cursor.fetchone()

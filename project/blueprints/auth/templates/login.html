@@ -28,6 +28,11 @@
         <h3 id="register-link">
             Don't have an account? <a href="{{ url_for("auth.register") }}">Register</a> 
         </h3>
+
+        {% for message in get_flashed_messages() %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+
     </div>
 
     </body>
