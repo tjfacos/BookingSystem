@@ -1,8 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db.connection import *
- 
-UUID = "UUID()"
 
 def AuthoriseUser(email, password):
     """Checks email and password are correct"""

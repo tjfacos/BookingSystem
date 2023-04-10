@@ -68,6 +68,7 @@ main {
     margin: 5rem 5%;
     padding: 2rem;
     border: 5px solid grey;
+    border-radius: 2rem;
 }
 
 form input {
@@ -83,6 +84,7 @@ textarea {
     width: 90%;
     margin: 1vh;
     border-radius: 5px;
+    resize: none;
 }
 
 input[type=colour] {
@@ -153,5 +155,5 @@ table tr:hover {background-color: #ddd;}
 /* Host Dashboard */
 
 #create-event-btn {
-    margin: 2rem;
+    margin: 1rem 0;
 }
