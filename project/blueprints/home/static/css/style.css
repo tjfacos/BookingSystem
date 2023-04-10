@@ -1,3 +1,88 @@
-:root {
-    background-color: red;
+:root * {
+    font-family: 'Quicksand', Courier, monospace;
+    font-size: 16px;
+}
+
+
+body {
+    background-color: aliceblue;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 5rem;
+    width: 100%;
+}
+
+#account-box {
+    position: fixed;
+    height: 5rem;
+    width: 10rem;
+    align-content: center;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+}
+
+#account-box img {
+    height: 4rem;
+    width: 4rem;
+    margin: 0.5rem 3rem;
+}
+
+#title {
+    font-size: 3rem;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    margin: 0;
+    padding: 0;
+    height: 0;
+    width: 0;
+    display: inline-block;
+}
+
+form {
+    height: 5rem;
+    width: 80%;
+    margin: 2rem 10%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+form input {
+    width: 100%;
+    height: 4rem;
+    border-radius: 1rem;
+    margin: auto;
+    text-align: center;
+}
+
+form button {
+    width: 100%;
+    height: 2rem;
+    border-radius: 1rem;
+    margin: 5px auto;
+    background-color: rgb(138, 197, 248);
+    transition: box-shadow 200ms ease;
+}
+
+form button:hover {
+    box-shadow: 5px 5px black;
+}
+
+#search-icon {
+    height: 100%;
+    width: auto;
+}
+
+.message {
+    text-align: center;
+    font-size: 2rem;
 }

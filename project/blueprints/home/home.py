@@ -18,7 +18,13 @@ bp = Blueprint(
     static_url_path="home/static"
 )
 
-@bp.route("/")
+@bp.route("/", methods=["GET", "POST"])
 def home():
+    search_term = request.args.get("search-term")
+    if search_term:
+        flash(f"No events found for '{ search_term }'")
+    else:
+        flash("No events found.")
+
     return render_template("home.html")
     
