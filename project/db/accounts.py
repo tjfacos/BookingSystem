@@ -19,3 +19,10 @@ def getUserInfo(user):
             "name": result[0],
             "DoB": result[1]
         }
+    
+def setGuestInfo(user, name, DoB):
+    db, cursor = CreateConnection()
+    user_id = user["user_id"]
+
+    cursor.execute(f"UPDATE GuestUsers SET name = '{name}', DoB = '{DoB}' WHERE GuestID='{user_id}'")
+    db.commit()

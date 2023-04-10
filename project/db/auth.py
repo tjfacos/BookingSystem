@@ -67,3 +67,19 @@ def getUserAccount(email) -> tuple[str, str, str]:
     
     cursor.execute(f"SELECT AccountID, user, type FROM Accounts WHERE email='{email}'")
     return cursor.fetchone()
+
+def ChangePassword(user, old_password, new_password) -> bool:
+    db, cursor = CreateConnection()
+    
+    account_id = user["account_id"]
+    cursor.execute(f"SELECT password FROM Accounts WHERE AccountID = '{account_id}'")
+    results = cursor.fetchone()
+
+    print(results[0])
+
+    if check_password_hash(results[0], old_password):
+        cursor.execute(f"UPDATE Accounts SET password = '{generate_password_hash(new_password)}' WHERE AccountID='{account_id}'")
+        db.commit()
+        return True
+    else:
+        return False

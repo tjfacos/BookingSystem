@@ -69,6 +69,8 @@ def sign_in():
             
             return redirect(url_for("home.home"))
 
+    if (g.user):
+        return redirect(url_for("dash.GuestDashboard"))
 
     return render_template("login.html")
 
@@ -93,6 +95,9 @@ def register():
                 type = request.form["type"],
                 DoB = request.form["DoB"]
             )
+
+    if (g.user):
+        return redirect(url_for("dash.GuestDashboard"))
 
     return render_template("register.html")
 

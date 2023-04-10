@@ -7,6 +7,7 @@
 
 from flask import *
 from db import accounts as db
+from db import auth
 
 from blueprints.auth.auth import login_required
 
@@ -21,17 +22,56 @@ bp = Blueprint(
 @bp.route("/guest", methods=["GET", "POST"])
 @login_required
 def GuestDashboard():
+    if g.user["type"] == "host":
+        return redirect(url_for("dash.HostDashboard"))
+    
     if request.method == "POST":
         name = request.form["name"]
         DoB = request.form["DoB"]
-        print(name, DoB)
+        db.setGuestInfo(g.user, name, DoB)
+        flash("Details successfully updated!")
+        print("Flashing...")
 
-    return render_template("GuestDashboard.html", info=db.getUserInfo(g.user))
+    return render_template(
+        "GuestDashboard.html", 
+        info=db.getUserInfo(g.user),
+        tickets=[]
+        # {
+        #     "ticket-id": 5345678945678965456789,
+        #     "event-name": "Test Event",
+        #     "start-time": "start",
+        #     "end-time": "end",
+        #     "host-name": "Tom's Venue",
+        #     "guest-number": 1,
+        #     "guests": "Thomas Facos"
+        # }
+    )
 
 @bp.route("/change-password", methods=["POST"])
 def ChangePassword():
     new_password = request.form["new-password"]
     old_password = request.form["old-password"]
-    print(new_password, old_password, g.user["type"])
-    flash("Success! Password has been changed!")
+    result = auth.ChangePassword(g.user, old_password, new_password)
+    if result:
+        flash("Success! Password has been changed!")
+    else:
+        flash("Sorry! Looks like your old password is incorrect. Please try again.")
+    
     return redirect(url_for("dash.GuestDashboard"))
+
+@bp.route("/cancel-ticket", methods=["POST"])
+def CancelTicket():
+    print(request.args.get("ticket"))
+    flash("Successfully Deleted Ticket!")
+    return redirect(url_for("dash.GuestDashboard"))
+
+
+@bp.route("/host", methods=["GET", "POST"])
+@login_required
+def HostDashboard():
+    if g.user["type"] == "guest":
+        return redirect(url_for("dash.GuestDashboard"))
+    
+    return render_template(
+        url_for("HostDashboard.html")
+    )

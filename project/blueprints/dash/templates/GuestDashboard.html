@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guest Dashboard - {{ info["name"] }}</title>
     <link rel="stylesheet" href="{{ url_for('dash.static', filename='css/style.css') }}">
+    <script src="{{ url_for("dash.static", filename="js/dash.js")}}"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>
 <body>
@@ -18,6 +19,10 @@
             <h1 id="title">Dashboard - {{info["name"]}}</h1>
         </div>
 
+        <div id="logout-box">
+            <h2> <a href="{{ url_for("auth.sign_out") }}"> Sign Out </a></h2>
+        </div>
+
     </div>
     
     <main>
@@ -27,7 +32,7 @@
         {% endfor %}
 
         <div class="form-container">
-            <h1 class="section-header">Personal Info: </h1>
+            <h1 class="section-header">Your Details </h1>
             <form method="post">
                 <label for="name">Name: </label>
                 <input type="text" name="name" value="{{info["name"]}}" required> <br>
@@ -41,14 +46,49 @@
             <h1 class="section-header">Security: Change your Password</h1>
             <form method="post" action="{{url_for("dash.ChangePassword")}}">
                 <label for="old-password">Old Password: </label>
-                <input type="password" name="old-password" required> <br>
+                <input type="password" name="old-password" id="old-password" required> <br>
                 <label for="new-password">New Password: </label>
-                <input type="password" name="new-password" required> <br>
+                <input type="password" name="new-password" id="new-password" required oninput="CheckConfirmPassword()"> <br>
                 <label for="confirm-password">Confirm Password: </label>
-                <input type="password" name="confirm-password" required> <br>
-                <button>Save Changes</button>
+                <input type="password" name="confirm-password" id="confirm-password" required oninput="CheckConfirmPassword()"> <br>
+                <button id="password-submit" disabled>Save Changes</button>
             </form>
         </div>
+
+        <div class="form-container" id="tickets-container">
+            <h1 class="section-header">Your Tickets</h1>
+            {% if not tickets: %}
+                <h3>Tickets you purchase will appear here</h3>
+            {% else %}
+            
+            <table id="tickets-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Starts</th>
+                    <th>Ends</th>
+                    <th>Host</th>
+                    <th>Number of Guests</th>
+                    <th>Guest(s)</th>
+                    <th>Cancel</th>
+                </tr>
+                {% for ticket in tickets %}
+                <tr class="ticket-row">
+                    <td class="id">{{ticket["ticket-id"]}}</td>
+                    <td class="name">{{ticket["event-name"]}}</td>
+                    <td class="start-time">{{ticket["start-time"]}}</td>
+                    <td class="end-time">{{ticket["end-time"]}}</td>
+                    <td class="host">{{ticket["host-name"]}}</td>
+                    <td class="guest-number">{{ticket["guest-number"]}}</td>
+                    <td class="guests">{{ticket["guests"]}}</td>
+                    <td><form method="post" action="{{url_for("dash.CancelTicket", ticket=ticket["ticket-id"])}}"><button class="cancel-ticket-btn">Cancel</button></form></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            {% endif %}
+        </div>
+
 
     </main>
 </body>
