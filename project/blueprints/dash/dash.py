@@ -72,6 +72,11 @@ def HostDashboard():
     if g.user["type"] == "guest":
         return redirect(url_for("dash.GuestDashboard"))
     
+    if request.method == "POST":
+        print(request.form["colour"])
+
+
     return render_template(
-        url_for("HostDashboard.html")
+        "HostDashboard.html",
+        info=db.getUserInfo(g.user)
     )

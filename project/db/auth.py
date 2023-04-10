@@ -47,8 +47,8 @@ def InsertUser(info : dict) -> bool:
         user_sql = "INSERT INTO HostUsers (name, hostID, account) VALUES (%s, %s, %s)"
         val = (info["name"], userPK, accountPK)
     else:
-        user_sql = "INSERT INTO GuestUsers (name, DoB, guestID, account) VALUES (%s, %s, %s, %s)"
-        val = (info["name"], info["DoB"], userPK, accountPK)
+        user_sql = "INSERT INTO GuestUsers (name, DoB, guestID, account, colour) VALUES (%s, %s, %s, %s, %s)"
+        val = (info["name"], info["DoB"], userPK, accountPK, "#ffffff")
     
     cursor.execute(user_sql, val)
     db.commit()

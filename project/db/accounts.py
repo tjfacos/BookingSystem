@@ -5,11 +5,13 @@ def getUserInfo(user):
     user_id = user["user_id"]
     
     if user["type"] == "host":
-        cursor.execute(f"SELECT name, description FROM HostUsers WHERE hostID = '{user_id}' ")
+        cursor.execute(f"SELECT name, description, location, colour FROM HostUsers WHERE hostID = '{user_id}' ")
         result = cursor.fetchone()
         return {
             "name": result[0],
-            "description": result[1]
+            "description": result[1],
+            "location": result[2],
+            "colour": result[3]
         }
     
     else:

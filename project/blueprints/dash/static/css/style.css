@@ -123,3 +123,18 @@ table tr:hover {background-color: #ddd;}
 .ticket-row .id {
     word-wrap: break-word;
 }
+
+#delete-account {
+    background-color: red;
+    color: white;
+    position: relative;
+    bottom:0;
+    left: 0;
+    margin: 5rem;
+}
+
+#delete-account:hover {
+    background-color: red;
+    box-shadow: 5px 5px black;
+    border: none;
+}

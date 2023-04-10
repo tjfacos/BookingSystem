@@ -1,9 +1,8 @@
 ## Templates
 - Account Page
-    - Allows for the  user to change their name, password etc.
-    - Delete
+    - Delete Tickets and Account
 - Host Dashboard
-    - Add image and Description
+    - Add colour and Description
     - Create New Events and See Current Events
     - Delete Events and Account
 - Home Page (at root, displaying the 10 most recent events)

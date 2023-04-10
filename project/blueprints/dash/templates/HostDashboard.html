@@ -18,21 +18,27 @@
             <h1 id="title">Dashboard - {{info["name"]}}</h1>
         </div>
 
+        <div id="logout-box">
+            <h2> <a href="{{ url_for("auth.sign_out") }}"> Sign Out </a></h2>
+        </div>
+
     </div>
     
     <main>
-<!--         
+        
         {% for message in get_flashed_messages() %}
         <h2 class="server-message">{{ message }}</h2>
         {% endfor %}
 
         <div class="form-container">
-            <h1 class="section-header">Your Details </h1>
+            <h1 class="section-header">Host Details</h1>
             <form method="post">
-                <label for="name">Name: </label>
+                <label for="name">Host Name: </label>
                 <input type="text" name="name" value="{{info["name"]}}" required> <br>
-                <label for="DoB">Date of Birth: </label>
-                <input type="date" name="DoB" value="{{info["DoB"]}}" required>
+                <label for="colour">Accent Colour: </label>
+                <input type="color" name="colour" value="{{info["colour"]}}">
+                <label for="location">Location/Address: </label>
+                <input type="text" name="location" value="{{info["location"]}}">
                 <button>Save Changes</button>
             </form>
         </div>
@@ -48,7 +54,7 @@
                 <input type="password" name="confirm-password" required> <br>
                 <button>Save Changes</button>
             </form>
-        </div> -->
+        </div>
 
         <!-- <div class="form-container" id="tickets-container">
             <h1 class="section-header">Your Tickets</h1>
