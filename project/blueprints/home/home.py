@@ -14,13 +14,11 @@ bp = Blueprint(
     __name__, 
     url_prefix="/",
     template_folder="templates",
-    static_folder="static"
+    static_folder="static",
+    static_url_path="home/static"
 )
 
 @bp.route("/")
 def home():
-    if g.user:
-        return str(g.user)
-    
-    return "Hello, home!"
+    return render_template("home.html")
     
