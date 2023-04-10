@@ -39,12 +39,23 @@ def EventBelongsToUser(id, user):
     
     return False
 
+def GetEvent(id):
+    db, cursor = CreateConnection()
 
-
-
-
-
-
-
-
+    cursor.execute(f"SELECT * FROM Events WHERE eventID = '{id}'")
+    results = cursor.fetchone()
+    results = results[:len(results)-3]
+    # print(results)
+    # name	agelimit	starttime	endtime	desciption	attendee_limit	attendee_no	colour	location	public
+    return {
+        "name": results[0],
+        "agelimit": results[1],
+        "start": results[2],
+        "end": results[3],
+        "description": results[4],
+        "attendee_limit": results[5],
+        "colour": results[6],
+        "location": results[7],
+        "public": bool(results[8])
+    }
 
