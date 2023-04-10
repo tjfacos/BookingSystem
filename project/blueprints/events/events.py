@@ -8,6 +8,8 @@
 from flask import *
 from blueprints.auth.auth import login_required
 
+from db import events as db
+
 bp = Blueprint(
     "events", 
     __name__, 
@@ -23,11 +25,11 @@ def eventDetails(event_id):
 @bp.route("/create-event")
 @login_required
 def CreateEvent():
-    pass
-
-    # Creates Event, then redirects to edit-event
+    id = db.CreateEvent(g.user)
+    return redirect(url_for("events.EditEvent", event_id=id))
 
 @bp.route("/edit-event/<event_id>")
 @login_required
 def EditEvent(event_id):
-    pass
+    if db.EventBelongsToUser(event_id, g.user):
+        return render_template("editEvent.html")

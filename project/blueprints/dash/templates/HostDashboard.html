@@ -62,7 +62,7 @@
 
         <div class="form-container" id="events-container">
             <h1 class="section-header">My Events</h1>
-            <button id="create-event-btn">Create Event</button>
+            <a href="{{url_for("events.CreateEvent")}}"><button id="create-event-btn">Create Event</button></a>
             {% if events: %}
             <table id="events-table">
                 
