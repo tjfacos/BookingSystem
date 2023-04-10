@@ -26,10 +26,13 @@ def EventBelongsToUser(id, user):
     db, cursor = CreateConnection()
 
     cursor.execute(f"SELECT host FROM Events WHERE eventID = '{id}'")
-    host = cursor.fetchone()[0]
+    try:
+        host = cursor.fetchone()[0]
+    except TypeError:
+        return False
 
-    # print(type(host))
-    # print(type(user["user_id"]))
+    print(host)
+    print(user["user_id"])
 
     if user["user_id"] == host:
         return True

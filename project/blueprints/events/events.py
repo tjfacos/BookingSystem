@@ -31,5 +31,9 @@ def CreateEvent():
 @bp.route("/edit-event/<event_id>")
 @login_required
 def EditEvent(event_id):
-    if db.EventBelongsToUser(event_id, g.user):
-        return render_template("editEvent.html")
+    print(g.user)
+    if not db.EventBelongsToUser(event_id, g.user):
+        print("Naughty...")
+        return redirect(url_for("home.home"))    
+        
+    return render_template("editEvent.html")
