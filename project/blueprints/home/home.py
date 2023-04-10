@@ -5,7 +5,6 @@
 # - The search results page
 
 from flask import *
-from db import auth
 
 import functools
 
@@ -26,5 +25,8 @@ def home():
     else:
         flash("No events found.")
 
-    return render_template("home.html")
+    return render_template("home.html", events=[{
+        "name": "Test Event",
+        "id": 1234567
+    }])
     
