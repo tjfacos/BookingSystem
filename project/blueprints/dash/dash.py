@@ -73,10 +73,23 @@ def HostDashboard():
         return redirect(url_for("dash.GuestDashboard"))
     
     if request.method == "POST":
-        print(request.form["colour"])
+        db.setHostInfo(
+            g.user, 
+            request.form['name'],    
+            request.form['colour'],    
+            request.form['location'],    
+            request.form['description']    
+        )
+        flash("Details updated successfully!")
 
 
     return render_template(
         "HostDashboard.html",
         info=db.getUserInfo(g.user)
     )
+
+@bp.route("/delete-account", methods=["GET", "POST"])
+def DeleteAccount():
+    db.DeleteUser(g.user)
+    flash("Successfully Deleted Account")
+    return redirect(url_for("auth.sign_out"))

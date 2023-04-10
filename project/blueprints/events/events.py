@@ -18,3 +18,10 @@ bp = Blueprint(
 @bp.route("/event-details/<event_id>")
 def eventDetails(event_id):
     return event_id
+
+@bp.route("/create-event")
+def CreateEvent():
+    pass
+
+    # Creates Event, then redirects to edit-event
+

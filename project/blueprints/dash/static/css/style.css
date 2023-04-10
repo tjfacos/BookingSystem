@@ -79,6 +79,16 @@ form input {
     background-color: azure;
 }
 
+textarea {
+    width: 90%;
+    margin: 1vh;
+    border-radius: 5px;
+}
+
+input[type=colour] {
+    height: 2rem;
+}
+
 .section-header {
     font-size: 3rem;
 }
@@ -137,4 +147,11 @@ table tr:hover {background-color: #ddd;}
     background-color: red;
     box-shadow: 5px 5px black;
     border: none;
+}
+
+
+/* Host Dashboard */
+
+#create-event-btn {
+    margin: 2rem;
 }

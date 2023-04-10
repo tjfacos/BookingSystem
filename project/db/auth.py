@@ -44,11 +44,11 @@ def InsertUser(info : dict) -> bool:
     userPK = results[0][1]
 
     if info["type"] == 'host':
-        user_sql = "INSERT INTO HostUsers (name, hostID, account) VALUES (%s, %s, %s)"
-        val = (info["name"], userPK, accountPK)
+        user_sql = "INSERT INTO HostUsers (name, hostID, account, colour, location, description) VALUES (%s, %s, %s, %s, %s, %s)"
+        val = (info["name"], userPK, accountPK, "#ffffff", "", "")
     else:
-        user_sql = "INSERT INTO GuestUsers (name, DoB, guestID, account, colour) VALUES (%s, %s, %s, %s, %s)"
-        val = (info["name"], info["DoB"], userPK, accountPK, "#ffffff")
+        user_sql = "INSERT INTO GuestUsers (name, DoB, guestID, account) VALUES (%s, %s, %s, %s)"
+        val = (info["name"], info["DoB"], userPK, accountPK)
     
     cursor.execute(user_sql, val)
     db.commit()
