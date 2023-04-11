@@ -17,7 +17,7 @@ def CreateEvent(user):
 
     db.commit()
 
-    cursor.execute(f"SELECT eventID FROM Events WHERE created = '{time}'")
+    cursor.execute("SELECT eventID FROM Events WHERE created = %s", [time])
     id = cursor.fetchone()[0]
 
     return id
@@ -25,14 +25,14 @@ def CreateEvent(user):
 def EventBelongsToUser(id, user):
     db, cursor = CreateConnection()
 
-    cursor.execute(f"SELECT host FROM Events WHERE eventID = '{id}'")
+    cursor.execute("SELECT host FROM Events WHERE eventID = %s", [id])
     try:
         host = cursor.fetchone()[0]
     except TypeError:
         return False
 
-    print(host)
-    print(user["user_id"])
+    # print(host)
+    # print(user["user_id"])
 
     if user["user_id"] == host:
         return True
@@ -42,10 +42,9 @@ def EventBelongsToUser(id, user):
 def GetEvent(id):
     db, cursor = CreateConnection()
 
-    cursor.execute(f"SELECT * FROM Events WHERE eventID = '{id}'")
+    cursor.execute("SELECT * FROM Events WHERE eventID = %s", [id])
     results = cursor.fetchone()
     results = results[:len(results)-3]
-    # print(results)
     # name	agelimit	starttime	endtime	desciption	attendee_limit	attendee_no	colour	location	public
     return {
         "name": results[0],

@@ -4,7 +4,6 @@ import mysql.connector
 
 load_dotenv()
 
-UUID = "UUID()"
 
 def CreateConnection():
     db = mysql.connector.connect(

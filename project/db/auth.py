@@ -7,7 +7,7 @@ def AuthoriseUser(email, password):
     
     db, cursor = CreateConnection()
     
-    cursor.execute(f"SELECT password FROM Accounts WHERE email = '{email}'")
+    cursor.execute("SELECT password FROM Accounts WHERE email = %s", [email] )
     results = cursor.fetchone()
     
     if not results:
@@ -31,12 +31,16 @@ def InsertUser(info : dict) -> bool:
     
     db, cursor = CreateConnection()
     
-    account_sql = f"INSERT INTO Accounts (email, password, type, AccountID, user) VALUES ('{info['email']}', '{generate_password_hash(info['password'])}', '{info['type']}', {UUID}, {UUID})" 
+    account_sql = "INSERT INTO Accounts (email, password, type, AccountID, user) VALUES (%s, %s, %s, UUID(), UUID())" 
+    cursor.execute(account_sql, (
+        info["email"],
+        generate_password_hash(info["password"]),
+        info["type"]
+    ))
 
-    cursor.execute(account_sql)
     db.commit()
 
-    cursor.execute(f"SELECT AccountID, user FROM Accounts where email = '{ info['email'] }'")
+    cursor.execute("SELECT AccountID, user FROM Accounts where email = %s", [ info["email"] ])
     results = cursor.fetchall()
     accountPK = results[0][0]
     userPK = results[0][1]
@@ -57,26 +61,27 @@ def InsertUser(info : dict) -> bool:
 def AccountExists(email: str) -> bool:
     db, cursor = CreateConnection()
 
-    cursor.execute(f"SELECT * FROM Accounts WHERE email='{email}'")
+    cursor.execute("SELECT * FROM Accounts WHERE email=%s", [email])
     return bool(cursor.fetchall())
 
 def getUserAccount(email) -> tuple[str, str, str]:
     db, cursor = CreateConnection()
     
-    cursor.execute(f"SELECT AccountID, user, type FROM Accounts WHERE email='{email}'")
+    cursor.execute("SELECT AccountID, user, type FROM Accounts WHERE email=%s", [email])
     return cursor.fetchone()
 
 def ChangePassword(user, old_password, new_password) -> bool:
     db, cursor = CreateConnection()
     
     account_id = user["account_id"]
-    cursor.execute(f"SELECT password FROM Accounts WHERE AccountID = '{account_id}'")
+    cursor.execute("SELECT password FROM Accounts WHERE AccountID = %s", [account_id])
     results = cursor.fetchone()
 
-    print(results[0])
-
     if check_password_hash(results[0], old_password):
-        cursor.execute(f"UPDATE Accounts SET password = '{generate_password_hash(new_password)}' WHERE AccountID='{account_id}'")
+        cursor.execute("UPDATE Accounts SET password = %s WHERE AccountID=%s", (
+            generate_password_hash(new_password),
+            account_id
+        ))
         db.commit()
         return True
     else:

@@ -5,7 +5,7 @@ def getUserInfo(user):
     user_id = user["user_id"]
     
     if user["type"] == "host":
-        cursor.execute(f"SELECT name, description, location, colour FROM HostUsers WHERE hostID = \"{user_id}\" ")
+        cursor.execute("SELECT name, description, location, colour FROM HostUsers WHERE hostID = %s", [ user_id ])
         result = cursor.fetchone()
         return {
             "name": result[0],
@@ -15,7 +15,7 @@ def getUserInfo(user):
         }
     
     else:
-        cursor.execute(f"SELECT name, DoB FROM GuestUsers WHERE guestID = \"{user_id}\" ")
+        cursor.execute("SELECT name, DoB FROM GuestUsers WHERE guestID = %s", [user_id] )
         result = cursor.fetchone()
         return {
             "name": result[0],
@@ -26,16 +26,26 @@ def setGuestInfo(user, name, DoB):
     db, cursor = CreateConnection()
     user_id = user["user_id"]
 
-    cursor.execute(f"UPDATE GuestUsers SET name = \"{name}\", DoB = \"{DoB}\" WHERE guestID=\"{user_id}\"")
+    cursor.execute("UPDATE GuestUsers SET name = %s, DoB = %s WHERE guestID=%s", (
+        name,
+        DoB,
+        user_id
+    ))
+
     db.commit()
 
 def setHostInfo(user, name, colour, location, description):
     db, cursor = CreateConnection()
     user_id = user["user_id"]
     
-    print(f"UPDATE HostUsers SET name = \"{name}\" , colour = \"{colour}\", location = \"{location}\", description = \"{description}\" WHERE hostID=\"{user_id}\"")
     
-    cursor.execute(f"UPDATE HostUsers SET name = \"{name}\", colour = \"{colour}\", location = \"{location}\", description = \"{description}\" WHERE hostID=\"{user_id}\"")
+    cursor.execute("UPDATE HostUsers SET name = %s, colour = %s, location = %s, description = %s WHERE hostID=%s", (
+        name,
+        colour,
+        location,
+        description,
+        user_id
+    ))
     db.commit()
 
 def DeleteUser(user):
@@ -45,10 +55,11 @@ def DeleteUser(user):
     type = user["type"]
 
     if type == "host":
-        cursor.execute(f"DELETE FROM HostUsers WHERE hostID = \"{user_id}\"")
+        sql = "DELETE FROM HostUsers WHERE hostID = %s"
     else:
-        cursor.execute(f"DELETE FROM GuestUsers WHERE guestID = \"{user_id}\"")
-    
-    cursor.execute(f"DELETE FROM Accounts WHERE AccountID = \"{account_id}\"")
+        sql = "DELETE FROM GuestUsers WHERE guestID = %s"
+
+    cursor.execute(sql, [user_id])
+    cursor.execute("DELETE FROM Accounts WHERE AccountID = %s", [account_id])
 
     db.commit()
