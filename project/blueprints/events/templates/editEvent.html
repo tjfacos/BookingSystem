@@ -4,9 +4,76 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Event</title>
+    <title>Edit Event - {{info["name"]}}</title>
+    <link rel="stylesheet" href="{{ url_for('events.static', filename='css/style.css') }}">
+    <script src="{{ url_for("events.static", filename="js/event.js")}}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>
-<body>
-    EDIT EVENT
+
+<!-- Info conatins: -->
+<!-- name	agelimit	starttime	endtime	  desciption	attendee_limit	attendee_no	colour	location	public -->
+
+<body onload="ChangeColour()">
+    <header id="navbar">
+        <div id="home-box">
+            <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
+        </div>
+
+        <div id="page-name">
+            <h1 id="title">Edit Event - {{info["name"]}}</h1>
+        </div>
+
+        <div id="logout-box">
+            <h2> <a href="{{ url_for("dash.HostDashboard") }}"> Dashboard </a></h2>
+        </div>
+
+    </header>
+    
+    <main>
+        
+        {% for message in get_flashed_messages() %}
+        <h2 class="server-message">{{ message }}</h2>
+        {% endfor %}
+
+
+        <div class="form-container" id="event-details-container">
+            <h1 class="section-header">Event Details</h1>
+            <form method="post">
+                <label for="name">Name: </label>
+                <input type="text" name="name" value="{{info["name"]}}" required> <br>
+                <label for="agelimit">Agelimit: </label>
+                <input type="number" name="agelimit" value="{{info["agelimit"]}}" required>
+                <label for="starttime">Start Time: </label>
+                <input type="datetime-local" name="starttime" value="{{info["starttime"]}}" required>
+                <label for="endtime">End Time: </label>
+                <input type="datetime-local" name="endtime" value="{{info["endtime"]}}" required>
+                <label for="description">Description:</label> <br>
+                <textarea name="description" id="description-box" cols="100" rows="10">{{info["description"]}}</textarea> <br>
+                <label for="attendee_limit">Attendee Limit: </label>
+                <input type="number" name="attendee_limit" value="{{info["attendee_limit"]}}" required> <br>
+                <label for="colour">Accent Colour: </label>
+                <input type="color" name="colour" id="colour" value="{{info["colour"]}}" required oninput="ChangeColour()"> <br>
+                <label for="location">Location: </label>
+                <input type="text" name="location" value="{{info["location"]}}" required> <br>
+                <label for="public">Public </label> 
+                <input type="checkbox" name="public" id = "public_checkbox"> <br>
+                <button>Save Changes</button>
+            </form>
+        </div>
+
+    </main>
+
+
+    <script>
+        public_checkbox = document.getElementById("public_checkbox")
+
+        console.log("{{info['public']}}")
+
+        if ("{{ info['public'] }}" == "False") {
+            public_checkbox.checked = false;
+        } else {
+            public_checkbox.checked = true;
+        }
+    </script>
 </body>
 </html>

@@ -16,9 +16,9 @@ bp = Blueprint(
 def CreateNewSession(email):
     session.clear()
     session["account_id"], session["user_id"], session["type"] = db.getUserAccount(email)
-    print(session["account_id"])
-    print(session["user_id"])
-    print(session["type"])
+    # print(session["account_id"])
+    # print(session["user_id"])
+    # print(session["type"])
 
 
 def authorise(email, password):
@@ -50,7 +50,11 @@ def registerNewUser(**properties):
 
     CreateNewSession(properties["email"])
 
-    return redirect(url_for("home.home"))
+    if (session["type"] == "guest"):
+        return redirect(url_for("home.home"))
+    else:
+        return redirect(url_for("dash.HostDashboard"))
+
 
 
 
@@ -67,7 +71,10 @@ def sign_in():
             
             CreateNewSession(email)   
             
-            return redirect(url_for("home.home"))
+            if (session["type"] == "guest"):
+                return redirect(url_for("home.home"))
+            else:
+                return redirect(url_for("dash.HostDashboard"))
 
     if (g.user):
         return redirect(url_for("dash.GuestDashboard"))

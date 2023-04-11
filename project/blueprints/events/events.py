@@ -28,12 +28,39 @@ def CreateEvent():
     id = db.CreateEvent(g.user)
     return redirect(url_for("events.EditEvent", event_id=id))
 
-@bp.route("/edit-event/<event_id>")
+@bp.route("/edit-event/<event_id>", methods=["GET", "POST"])
 @login_required
 def EditEvent(event_id):
-    print(g.user)
+    # print(g.user)
     if not db.EventBelongsToUser(event_id, g.user):
         print("Naughty...")
         return redirect(url_for("home.home"))    
         
-    return render_template("editEvent.html")
+
+    if request.method == "POST":
+        # print(request.form)
+        info = {}
+        public = False
+        for item in request.form:
+            print(item)
+            info[item] = request.form[item]
+            match item:
+                case "agelimit" | "attendee_limit":
+                    info[item] = int(info[item])
+                case "starttime" | "endtime":
+                    info[item] = info[item].replace("T", " ")
+                case "public":
+                    public = True
+
+        info["public"] = public
+
+        info["eventID"] = event_id
+        print(info)
+        db.UpdateEvent(info)
+        flash("Updated Successfully!")
+
+
+
+    return render_template("editEvent.html", info = db.GetEvent(event_id))
+    # name	agelimit	starttime	endtime	desciption	attendee_limit	attendee_no	colour	location	public
+    
