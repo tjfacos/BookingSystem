@@ -14,3 +14,26 @@ const CheckConfirmPassword = () => {
 
     }
 }
+
+const ConfigureEventsTable = () => {
+    console.log("Running...")
+    
+    let colour_cells = document.getElementsByClassName("colour")
+    console.log(colour_cells)
+    for (let i = 0; i < colour_cells.length; i++) {
+        let cell = colour_cells[i]
+        let colour = cell.classList[1]
+        console.log(cell, colour)
+        console.log(colour != "None")
+        if (colour != "None") {
+            document.getElementById(cell.id).style.backgroundColor = colour
+        }
+    }
+
+    const cells = document.querySelectorAll("td")
+    for (let x = 0; x < cells.length; x++) {
+        if (cells[x].innerText == "None") {
+            cells[x].innerText = "-"
+        }
+    }
+}

@@ -8,6 +8,7 @@
 from flask import *
 from db import accounts as db
 from db import auth
+from db.events import GetHostEventsList
 
 from blueprints.auth.auth import login_required
 
@@ -85,7 +86,8 @@ def HostDashboard():
 
     return render_template(
         "HostDashboard.html",
-        info=db.getUserInfo(g.user)
+        info=db.getUserInfo(g.user),
+        events=GetHostEventsList(g.user)
     )
 
 @bp.route("/delete-account", methods=["GET", "POST"])

@@ -67,6 +67,43 @@ def GetEvent(id):
     print(info)
     return info
 
+def GetHostEventsList(user) -> list[dict]:
+    db, cursor = CreateConnection()
+    
+    hostID = user["user_id"]
+
+    cursor.execute(
+        "SELECT name, agelimit, starttime, endtime, description, attendee_limit, attendee_no, colour, location, public, eventID FROM Events WHERE host = %s", 
+        [
+            hostID
+        ]
+    )
+
+    results = cursor.fetchall()
+    events = []
+    for result in results:
+        events.append({
+            "name": result[0],
+            "agelimit": result[1],
+            "starttime": result[2],
+            "endtime": result[3],
+            "description": result[4],
+            "attendee_limit": result[5],
+            "attendee_no": result[6],
+            "colour": result[7],
+            "location": result[8],
+            "public": bool(result[9]),
+            "eventID": result[10]
+        })
+    
+    return events
+
+
+
+
+
+
+
 def UpdateEvent(info : dict):
     db, cursor = CreateConnection()
     sql = """

@@ -10,7 +10,7 @@
     <script src="{{ url_for("dash.static", filename="js/dash.js")}}"></script>
 
 </head>
-<body>
+<body onload="ConfigureEventsTable()">
     <div id="navbar">
         <div id="home-box">
             <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
@@ -67,7 +67,6 @@
             <table id="events-table">
                 
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Starts</th>
                     <th>Ends</th>
@@ -76,23 +75,24 @@
                     <th>Attendees</th>
                     <th>Colour</th>
                     <th>Location</th>
+                    <th>Public</th>
                     <th>Edit Event</th>
                 </tr>
 
                 {% for event in events %}
                  <tr class="event-row">
-                    <td class="id">{{event["event-id"]}}</td>
                     <td class="name">{{event["name"]}}</td>
-                    <td class="start-time">{{event["start-time"]}}</td>
-                    <td class="end-time">{{event["end-time"]}}</td>
-                    <td class="age-limit">{{event["age-limit"]}}</td>
-                    <td class="attendee-limit">{{event["attendee-limit"]}}</td>
-                    <td class="attendees"><a href="">{{event["attendees"]}}</a></td>
+                    <td class="start-time">{{event["starttime"]}}</td>
+                    <td class="end-time">{{event["endtime"]}}</td>
+                    <td class="age-limit">{{event["agelimit"]}}</td>
+                    <td class="attendee-limit">{{event["attendee_limit"]}}</td>
+                    <td class="attendees"><a href="">{{event["attendee_no"]}}</a></td>
                     <!-- Add link to attendees page (yunno, once it exists... ) -->
-                    <td class="colour {{event["colour"]}}"></td> 
+                    <td class="colour {{event["colour"]}}" id="{{ event["eventID"]+"_colour" }}"></td> 
                     <!-- This will rely on Javascript to work -->
-                    <td class="location"></td> 
-                    <td><a href=""><button class="edit-event-btn">Edit</button></a></td>
+                    <td class="location">{{event["location"]}}</td> 
+                    <td class="public">{{event["public"]}}</td> 
+                    <td><a href="{{ url_for("events.EditEvent", event_id = event["eventID"]) }}"><button class="edit-event-btn">Edit</button></a></td>
                     <!-- Add link to edit event view -->
                 </tr>
                 {% endfor %}
