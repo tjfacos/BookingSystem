@@ -117,3 +117,39 @@ button:hover {
     border: 5px solid blue;
     box-shadow: 5px 5px black;
 }
+
+
+/* Event Details */
+
+.event-info {
+    width: 80%;
+    height: 90%;
+    margin: 5rem 5%;
+    padding: 2rem;
+    border: 5px solid var(--colour);
+    border-radius: 2rem;
+    transition: box-shadow 200ms ease;
+}
+
+.event-info .public {
+    font-size: 2rem;
+}
+
+.event-info h3 {
+    font-size: 1.5rem;
+}
+
+.event-info:hover {
+    box-shadow: 15px 15px var(--colour);
+}
+
+.event-info input, .event-info label {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 1.5rem;
+}
+
+.agelimit {
+    color: red;
+}

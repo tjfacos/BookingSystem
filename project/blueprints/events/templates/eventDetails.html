@@ -13,7 +13,7 @@
 <!-- Info conatins: -->
 <!-- name	agelimit	starttime	endtime	  desciption	attendee_limit	attendee_no	colour	location	public -->
 
-<body onload="">
+<body onload="ChangeEventColour()">
     <header id="navbar">
         <div id="home-box">
             <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
@@ -35,7 +35,32 @@
         <h2 class="server-message">{{ message }}</h2>
         {% endfor %}
 
+        <!-- {{info}} -->
 
+        <div id="event-info" class="event-info {{info["colour"]}}">
+            {% if info["public"]: %}
+            <h2 class="public">Public Event</h2>
+            {%else:%}
+            <h2 class="public">Private Event</h2>
+            {%endif%}
+
+            <h3 class="places">{{info["place_left"]}} Places Left</h2>
+
+            {% if info["agelimit"]: %}
+            <h3 class="agelimit">Age-Limit: {{info["agelimit"]}} Years Old</h3>
+            {% endif %}
+            
+            <label for="starttime">Starts</label>
+            <input name="starttime" type="datetime-local" class="starttime time" value="{{info["starttime"]}}" readonly> <br>
+            <label for="endtime">Ends</label>
+            <input name="endtime" type="datetime-local" class="endtime time" value="{{info["endtime"]}}" readonly> <br>
+            <h3 class="location">Location: {{info["location"]}}</h3>
+            <h3 class="host">Host: {{info["host"]}}</h3>
+            <h3 class="type">Type: {{info["type"]}}</h3>
+            <h3>Description</h3>
+            <p class="description">{{info["description"]}}</p>
+
+        </div>
 
     </main>
 

@@ -1,4 +1,4 @@
-# EVENTS MODULE (mounted at root [/events] )
+# EVENTS MODULE (mounted at root [/event] )
 
 # This is contain a blueprint for 
 # - The Event Details Page
@@ -20,7 +20,7 @@ bp = Blueprint(
 
 @bp.route("/event-details/<event_id>", methods=["GET"])
 def EventDetails(event_id):
-    return render_template("eventDetails.html", info=db.GetEventDetails())
+    return render_template("eventDetails.html", info=db.GetEventDetails(event_id))
 
 
 
