@@ -1,1 +1,0 @@
-SELECT name, agelimit, starttime, endtime, colour, location, host, type, eventID, created, attendee_limit, attendee_no FROM Events WHERE public = true AND name LIKE %%%s%% OR description LIKE %%%s%% ORDER BY created DESC
