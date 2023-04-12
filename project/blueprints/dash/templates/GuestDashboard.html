@@ -63,25 +63,25 @@
             
             <table id="tickets-table">
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Starts</th>
                     <th>Ends</th>
                     <th>Host</th>
-                    <th>Number of Guests</th>
-                    <th>Guest(s)</th>
+                    <th>Guests</th>
+                    <th>Location</th>
+                    <th>Type</th>
                     <th>Cancel</th>
                 </tr>
                 {% for ticket in tickets %}
-                <tr class="ticket-row">
-                    <td class="id">{{ticket["ticket-id"]}}</td>
-                    <td class="name">{{ticket["event-name"]}}</td>
-                    <td class="start-time">{{ticket["start-time"]}}</td>
-                    <td class="end-time">{{ticket["end-time"]}}</td>
-                    <td class="host">{{ticket["host-name"]}}</td>
-                    <td class="guest-number">{{ticket["guest-number"]}}</td>
-                    <td class="guests">{{ticket["guests"]}}</td>
-                    <td><form method="post" action="{{url_for("dash.CancelTicket", ticket=ticket["ticket-id"])}}"><button class="cancel-ticket-btn">Cancel</button></form></td>
+                <tr class="ticket-row {{ticket["colour"]}}">
+                    <td class="name">{{ticket["name"]}}</td>
+                    <td class="start-time">{{ticket["starttime"]}}</td>
+                    <td class="end-time">{{ticket["endtime"]}}</td>
+                    <td class="host">{{ticket["host"]}}</td>
+                    <td class="guest-number">{{ticket["guestNames"]}}</td>
+                    <td class="location">{{ticket["location"]}}</td>
+                    <td class="type">{{ticket["type"]}}</td>
+                    <td><form method="post" action="{{url_for("dash.CancelTicket", ticket=ticket["ticketID"], event=ticket["eventID"])}}"><button class="cancel-ticket-btn">Cancel</button></form></td>
                 </tr>
                 {% endfor %}
             </table>

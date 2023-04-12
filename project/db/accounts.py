@@ -1,4 +1,6 @@
 from db.connection import *
+from db.home import GetHostName
+
 
 def getUserInfo(user):
     db, cursor = CreateConnection()
@@ -61,5 +63,49 @@ def DeleteUser(user):
 
     cursor.execute(sql, [user_id])
     cursor.execute("DELETE FROM Accounts WHERE AccountID = %s", [account_id])
+
+    db.commit()
+
+
+def GetGuestTickets(user):
+    db, cursor = CreateConnection()
+    user_id = user["user_id"]
+
+    events = []
+
+    sql = "SELECT ticketID, event, guestNames FROM Tickets WHERE purchaser = %s"
+    cursor.execute(sql, [user_id])
+    results = cursor.fetchall()
+    
+    for result in results:
+        cursor.execute(
+            """
+            SELECT name, starttime, endtime, colour, location, host, type
+            FROM Events
+            WHERE eventID = %s
+            """, [ result[1] ]
+        )
+        event = cursor.fetchone()
+
+        events.append({
+            "ticketID": result[0],
+            "eventID": result[1],
+            "guestNames": result[2],
+            "name": event[0],
+            "starttime": event[1],
+            "endtime": event[2],
+            "colour": event[3],
+            "location": event[4],
+            "host": GetHostName(event[5]),
+            "type": event[6]
+        })
+
+    return events
+
+def DeleteTicket(ticket, event):
+    db, cursor = CreateConnection()
+    
+    cursor.execute("DELETE FROM Tickets WHERE ticketID = %s", [ticket])
+    cursor.execute("UPDATE Events SET attendee_no = attendee_no - 1 WHERE eventID = %s", [event])
 
     db.commit()

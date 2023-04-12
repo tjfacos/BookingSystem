@@ -164,5 +164,8 @@ def CreateTicket(eventID: str, user, names: str):
     values = (user["user_id"] ,eventID, names)
 
     db, cursor = CreateConnection()
+
     cursor.execute(sql, values)
+    cursor.execute("UPDATE Events SET attendee_no = attendee_no + 1 WHERE eventID = %s", [eventID])
+
     db.commit()

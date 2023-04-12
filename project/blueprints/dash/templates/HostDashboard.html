@@ -88,14 +88,11 @@
                     <td class="age-limit">{{event["agelimit"]}}</td>
                     <td class="attendee-limit">{{event["attendee_limit"]}}</td>
                     <td class="attendees"><a href="">{{event["attendee_no"]}}</a></td>
-                    <!-- Add link to attendees page (yunno, once it exists... ) -->
                     <td class="colour {{event["colour"]}}" id="{{ event["eventID"]+"_colour" }}"></td> 
-                    <!-- This will rely on Javascript to work -->
                     <td class="location">{{event["location"]}}</td> 
                     <td class="type">{{event["type"]}}</td> 
                     <td class="public">{{event["public"]}}</td> 
                     <td><a href="{{ url_for("events.EditEvent", event_id = event["eventID"]) }}"><button class="edit-event-btn">Edit</button></a></td>
-                    <!-- Add link to edit event view -->
                 </tr>
                 {% endfor %}
                 

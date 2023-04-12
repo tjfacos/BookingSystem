@@ -33,10 +33,13 @@ def GuestDashboard():
         flash("Details successfully updated!")
         print("Flashing...")
 
+    tickets = db.GetGuestTickets(g.user)
+    print(tickets)
+
     return render_template(
         "GuestDashboard.html", 
         info=db.getUserInfo(g.user),
-        tickets=[]
+        tickets=tickets
         # {
         #     "ticket-id": 5345678945678965456789,
         #     "event-name": "Test Event",
@@ -62,7 +65,7 @@ def ChangePassword():
 
 @bp.route("/cancel-ticket", methods=["POST"])
 def CancelTicket():
-    print(request.args.get("ticket"))
+    db.DeleteTicket(request.args.get("ticket"), request.args.get("event"))
     flash("Successfully Deleted Ticket!")
     return redirect(url_for("dash.GuestDashboard"))
 
