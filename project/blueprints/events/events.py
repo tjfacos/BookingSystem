@@ -90,16 +90,28 @@ def ViewGuests(event_id):
 
 
 
-@bp.route("/deleteGuest/")
+
+
+@bp.route("/deleteGuest", methods = ["POST"])
 @login_required
 def DeleteGuest():
+    
+    print(request.args.get("ticket"))
+    print(request.args.get("event"))
+
     DeleteTicket(request.args.get("ticket"), request.args.get("event"))
 
     flash("Success! Guest has been deleted.")
 
     return redirect(url_for("dash.HostDashboard"))
 
-    
+
+
+
+
+
+
+
 
 @bp.route("/edit-event/<event_id>", methods=["GET", "POST"])
 @login_required

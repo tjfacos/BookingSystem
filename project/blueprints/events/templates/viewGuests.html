@@ -46,7 +46,7 @@
             <tr>
                 <td>{{ticket["ticketID"]}}</td>
                 <td>{{ticket["guestNames"]}}</td>
-                <td><form action="{{url_for("events.DeleteGuest", ticket=ticket["ticketID"], event=info["eventID"])}}"><button>Delete</button></form></td>
+                <td><form method="post" action="{{url_for("events.DeleteGuest", ticket=ticket["ticketID"], event=info["eventID"])}}"><button>Delete</button></form></td>
             </tr>
             {%endfor%}
         </table>        
