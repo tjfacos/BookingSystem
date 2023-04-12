@@ -87,7 +87,7 @@
                     <td class="end-time">{{event["endtime"]}}</td>
                     <td class="age-limit">{{event["agelimit"]}}</td>
                     <td class="attendee-limit">{{event["attendee_limit"]}}</td>
-                    <td class="attendees"><a href="">{{event["attendee_no"]}}</a></td>
+                    <td class="attendees"><a href="{{url_for("events.ViewGuests", event_id = event["eventID"])}}">{{event["attendee_no"]}}</a></td>
                     <td class="colour {{event["colour"]}}" id="{{ event["eventID"]+"_colour" }}"></td> 
                     <td class="location">{{event["location"]}}</td> 
                     <td class="type">{{event["type"]}}</td> 

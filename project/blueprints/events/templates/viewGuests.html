@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Guests - {{info["name"]}}</title>
+    <link rel="stylesheet" href="{{ url_for('events.static', filename='css/style.css') }}">
+    <script src="{{ url_for("events.static", filename="js/event.js")}}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+</head>
+
+<!-- Info conatins: -->
+<!-- name	agelimit	starttime	endtime	  desciption	attendee_limit	attendee_no	colour	location	public -->
+
+<body onload="ChangeEventColour()" class="{{info["colour"]}}">
+    <header id="navbar">
+        <div id="home-box">
+            <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
+        </div>
+
+        <div id="page-name">
+            <h1 id="title">View Guests - {{info["name"]}}</h1>
+        </div>
+
+        <div id="logout-box">
+            <h2> <a href="{{ url_for("dash.HostDashboard") }}"> Dashboard </a></h2>
+        </div>
+
+    </header>
+    
+    <main>
+        
+        {% for message in get_flashed_messages() %}
+        <h2 class="server-message">{{ message }}</h2>
+        {% endfor %}
+
+        <!-- {{info}} -->
+
+        <table class="guestListTable">
+            <tr>
+                <th>GuestID</th>
+                <th>Guests</th>
+            </tr>
+            {% for ticket in guestList %}
+            <tr>
+                <td>{{ticket["ticketID"]}}</td>
+                <td>{{ticket["guestNames"]}}</td>
+                <td><form action="{{url_for("events.DeleteGuest", ticket=ticket["ticketID"], event=info["eventID"])}}"><button>Delete</button></form></td>
+            </tr>
+            {%endfor%}
+        </table>        
+
+    </main>
+
+</body>
+</html>

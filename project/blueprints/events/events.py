@@ -11,8 +11,7 @@ from datetime import date
 from blueprints.auth.auth import login_required
 
 from db import events as db
-from db.accounts import getUserInfo
-
+from db.accounts import getUserInfo, DeleteTicket
 
 
 bp = Blueprint(
@@ -77,7 +76,30 @@ def CreateEvent():
     id = db.CreateEvent(g.user)
     return redirect(url_for("events.EditEvent", event_id=id))
 
+@bp.route("/viewGuests/<event_id>")
+@login_required
+def ViewGuests(event_id):
 
+    if not db.EventBelongsToUser(event_id, g.user):
+        return redirect(url_for("home.home"))
+    
+    info, guestList = db.GetGuestList(event_id)
+    info["eventID"] = event_id
+
+    return render_template("viewGuests.html", info=info, guestList=guestList)
+
+
+
+@bp.route("/deleteGuest/")
+@login_required
+def DeleteGuest():
+    DeleteTicket(request.args.get("ticket"), request.args.get("event"))
+
+    flash("Success! Guest has been deleted.")
+
+    return redirect(url_for("dash.HostDashboard"))
+
+    
 
 @bp.route("/edit-event/<event_id>", methods=["GET", "POST"])
 @login_required

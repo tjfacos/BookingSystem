@@ -169,3 +169,24 @@ def CreateTicket(eventID: str, user, names: str):
     cursor.execute("UPDATE Events SET attendee_no = attendee_no + 1 WHERE eventID = %s", [eventID])
 
     db.commit()
+
+def GetGuestList(event_id):
+    db, cursor = CreateConnection()
+
+    cursor.execute("SELECT ticketID, guestNames FROM Tickets WHERE event = %s", [event_id])
+    results = cursor.fetchall()
+    guestList = []
+    for guest in results:
+        guestList.append({
+            "ticketID": guest[0],
+            "guestNames": guest[1]
+        })
+    
+    cursor.execute("SELECT name, colour FROM Events WHERE eventID = %s", [event_id])
+    results = cursor.fetchone()
+    info = {
+        "name": results[0],
+        "colour": results[1]
+    }
+
+    return info, guestList
