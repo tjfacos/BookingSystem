@@ -6,9 +6,14 @@
 # - The Create Event Page
 
 from flask import *
+from datetime import date
+
 from blueprints.auth.auth import login_required
 
 from db import events as db
+from db.accounts import getUserInfo
+
+
 
 bp = Blueprint(
     "events", 
@@ -22,19 +27,48 @@ bp = Blueprint(
 def EventDetails(event_id):
     return render_template("eventDetails.html", info=db.GetEventDetails(event_id))
 
+@bp.route("book/<event_id>", methods=["GET", "POST"])
+@login_required
+def BookEvent(event_id):
+    if g.user["type"] == "host":
+        flash("A guest account is required to book tickets")
+        return redirect(url_for("dash.HostDashboard"))
+    
+    info = db.GetEventDetails(event_id)
+    user = getUserInfo(g.user)
+
+    user["age"] = ageInYears(user["DoB"])
+
+    if user["age"] < info["agelimit"]:
+        flash(f"Sorry! The age limit for this event is {info['agelimit']}")
+        return redirect(url_for("dash.GuestDashboard"))
 
 
+    if request.method == "POST":
+        names = []
+        for field in request.form:
+            if "name" in field:
+                names.append(request.form[field])
+        
+        db.CreateTicket(event_id, g.user, ', '.join(names))
+        flash("Success! Your Tickets have been booked!")
+        return redirect(url_for("dash.GuestDashboard"))
+
+    return render_template("bookEvent.html", info=info, user=user)
+
+def ageInYears(birthDate):
+
+    today = date.today()
+    lastYearBirthday = date(today.year - 1, birthDate.month, birthDate.day)
+    currYearBirthday = date(today.year, birthDate.month, birthDate.day)
 
 
+    if currYearBirthday > today:
+        years = lastYearBirthday.year - birthDate.year
+    else:
+        years = currYearBirthday.year - birthDate.year
 
-
-
-
-
-
-
-
-
+    return years
 
 
 @bp.route("/create-event")
@@ -43,11 +77,12 @@ def CreateEvent():
     id = db.CreateEvent(g.user)
     return redirect(url_for("events.EditEvent", event_id=id))
 
+
+
 @bp.route("/edit-event/<event_id>", methods=["GET", "POST"])
 @login_required
 def EditEvent(event_id):
     if not db.EventBelongsToUser(event_id, g.user):
-        # print("Naughty...")
         return redirect(url_for("home.home"))    
         
 
@@ -55,7 +90,6 @@ def EditEvent(event_id):
         info = {}
         public = False
         for item in request.form:
-            # print(item)
             info[item] = request.form[item]
             match item:
                 case "agelimit":

@@ -137,7 +137,7 @@ def GetEventDetails(id):
     cursor.execute(sql, [id])
     result = cursor.fetchone()    
     
-    return {
+    info = {
         "name": result[0],
         "agelimit": result[1],
         "starttime": result[2],
@@ -147,7 +147,22 @@ def GetEventDetails(id):
         "host": GetHostName(result[6]),
         "type": result[7],
         "eventID": result[8],
-        "place_left": result[9]-result[10],
         "description": result[11],
         "public": bool(result[12])
     }
+    
+    if result[9]:
+        info["place_left"] =  result[9]-result[10]
+
+    return info
+
+def CreateTicket(eventID: str, user, names: str):
+    sql = """
+    INSERT INTO Tickets
+    VALUES (UUID(), %s, %s, %s)
+    """
+    values = (user["user_id"] ,eventID, names)
+
+    db, cursor = CreateConnection()
+    cursor.execute(sql, values)
+    db.commit()

@@ -121,12 +121,13 @@ button:hover {
 
 /* Event Details */
 
-.event-info {
+.box {
     width: 80%;
     height: 90%;
     margin: 5rem 5%;
     padding: 2rem;
-    border: 5px solid var(--colour);
+    border: 2px solid var(--colour);
+    box-shadow: 5px 5px var(--colour);
     border-radius: 2rem;
     transition: box-shadow 200ms ease;
 }
@@ -135,12 +136,16 @@ button:hover {
     font-size: 2rem;
 }
 
-.event-info h3 {
+#booking-form h2 {
+    font-size: 2rem;
+}
+
+.box h3 {
     font-size: 1.5rem;
 }
 
-.event-info:hover {
-    box-shadow: 15px 15px var(--colour);
+.box:hover {
+    box-shadow: 20px 20px var(--colour);
 }
 
 .event-info input, .event-info label {
@@ -152,4 +157,28 @@ button:hover {
 
 .agelimit {
     color: red;
+}
+
+#book-btn {
+    border: 2px solid var(--colour);
+    transition: box-shadow 200ms ease, background-color 200ms ease;
+}
+
+#book-btn:hover {
+    box-shadow: 5px 5px black;
+    background-color: var(--colour);
+}
+
+/* Booking Page */
+
+.age-restriction {
+    color: red;
+}
+
+.guest-remove-btn {
+    height: 100%;
+}
+
+.guest-remove-btn:hover{
+    border: none;
 }

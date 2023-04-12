@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book - {{ info["name"]}}</title>
+    <link rel="stylesheet" href="{{ url_for('events.static', filename='css/style.css') }}">
+    <script src="{{ url_for("events.static", filename="js/event.js")}}"></script>
+    <script src="{{ url_for("events.static", filename="js/booking.js")}}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+    <script>
+        var agelimit = Number("{{info['agelimit'] }}")
+    </script>
+</head>
+
+<!-- Info conatins: -->
+<!-- name	agelimit	starttime	endtime	  desciption	attendee_limit	attendee_no	colour	location	public -->
+
+<body onload="ChangeEventColour()" class="{{info["colour"]}}">
+    <header id="navbar">
+        <div id="home-box">
+            <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
+        </div>
+
+        <div id="page-name">
+            <h1 id="title">Book {{info["name"]}}</h1>
+        </div>
+
+        <div id="logout-box">
+            <h2> <a href="{{ url_for("dash.GuestDashboard") }}"> Dashboard </a></h2>
+        </div>
+
+    </header>
+    
+    <main>
+        
+        <form method="POST" id="booking-form" class="box">
+            <h2 id="booking-title">Book Your Tickets for {{info["name"]}}</h1>
+            {% if info["agelimit"]: %}
+                <h3 class="age-restriction">All guest must be above the age of {{info["agelimit"]}}</h3>
+            {% endif %}
+
+            <h2>Guests</h2>
+            
+            <button type="button" onclick="AddGuest()">Add Guest</button>
+
+            <table id="guest-list">
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                </tr>
+                <tr class="guest-row" id="guest_1">
+                    <td><input type="text" name="guest_1_name" value="{{user["name"]}}" readonly></td>
+                    <td><input type="number" name="guest_1_age" value="{{user["age"]}}" readonly></td>
+                    <td><button onclick="RemoveGuest(1)" class="guest-remove-btn" type="button" onchange="CheckAge(1)">Remove Guest</button></td>
+                </tr>
+            </table>
+
+            <button id="book-btn" type="submit">Book</button>
+
+        </form>
+
+    </main>
+
+</body>
+</html>

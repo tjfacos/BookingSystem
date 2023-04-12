@@ -5,7 +5,7 @@ const ChangeColour = () => {
 }
 
 const ChangeEventColour = () => {
-    let box = document.getElementById("event-info")
-    let colour = box.classList[1]
-    box.style.setProperty('--colour', colour)
+    let body = document.querySelector("body")
+    let colour = body.classList[0]
+    document.querySelector(":root").style.setProperty('--colour', colour)
 }

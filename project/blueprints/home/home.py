@@ -35,7 +35,7 @@ def home():
         if event_type:
             terms["type"] = event_type
 
-    print(terms)
+    # print(terms)
 
     return render_template("home.html", event_type = event_type, search_term = search_term, events=db.GetHomeContent(**terms))
     
