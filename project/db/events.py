@@ -1,5 +1,7 @@
 from db.connection import *
+from db.home import GetHostName
 from datetime import datetime
+
 
 def CreateEvent(user):
     db, cursor = CreateConnection()
@@ -49,7 +51,7 @@ def EventBelongsToUser(id, user):
 def GetEvent(id):
     db, cursor = CreateConnection()
 
-    cursor.execute("SELECT name, agelimit, starttime, endtime, description, attendee_limit, colour, location, public FROM Events WHERE eventID = %s", [id])
+    cursor.execute("SELECT name, agelimit, starttime, endtime, description, attendee_limit, colour, location, public, type FROM Events WHERE eventID = %s", [id])
     results = cursor.fetchone()
     # name	agelimit	starttime	endtime	desciption	attendee_limit	attendee_no	colour	location	public
     info = {
@@ -61,10 +63,11 @@ def GetEvent(id):
         "attendee_limit": results[5],
         "colour": results[6],
         "location": results[7],
-        "public": bool(results[8])
+        "public": bool(results[8]),
+        "type": results[9]
     }
 
-    print(info)
+    # print(info)
     return info
 
 def GetHostEventsList(user) -> list[dict]:
@@ -73,13 +76,14 @@ def GetHostEventsList(user) -> list[dict]:
     hostID = user["user_id"]
 
     cursor.execute(
-        "SELECT name, agelimit, starttime, endtime, description, attendee_limit, attendee_no, colour, location, public, eventID FROM Events WHERE host = %s", 
+        "SELECT name, agelimit, starttime, endtime, description, attendee_limit, attendee_no, colour, location, public, eventID, type FROM Events WHERE host = %s", 
         [
             hostID
         ]
     )
 
     results = cursor.fetchall()
+    print(results)
     events = []
     for result in results:
         events.append({
@@ -93,7 +97,8 @@ def GetHostEventsList(user) -> list[dict]:
             "colour": result[7],
             "location": result[8],
             "public": bool(result[9]),
-            "eventID": result[10]
+            "eventID": result[10],
+            "type": result[11]
         })
     
     return events
@@ -106,14 +111,43 @@ def GetHostEventsList(user) -> list[dict]:
 
 def UpdateEvent(info : dict):
     db, cursor = CreateConnection()
+    if info["attendee_limit"] < 0:
+        info["attendee_limit"] = None
+    
     sql = """
     UPDATE Events 
     SET name = %s, agelimit = %s, starttime = %s, endtime=%s,
     description = %s, attendee_limit = %s, colour = %s, 
-    location = %s, public = %s WHERE eventID = %s
+    location = %s, type = %s, public = %s WHERE eventID = %s
     """
 
     values = list(info.values())
     
     cursor.execute(sql, values)
     db.commit()
+
+
+def GetEventDetails(id):
+    db, cursor = CreateConnection()
+    sql = """
+            SELECT name, agelimit, starttime, endtime, colour, location, host, type, eventID, attendee_limit, attendee_no, description, public
+            FROM Events
+            WHERE eventID = %s
+        """
+    cursor.execute(sql, [id])
+    result = cursor.fetchone()    
+    
+    return {
+        "name": result[0],
+        "agelimit": result[1],
+        "starttime": result[2],
+        "endtime": result[3],
+        "colour": result[4],
+        "location": result[5],
+        "host": GetHostName(result[6]),
+        "type": result[7],
+        "eventID": result[8],
+        "place_left": result[9]-result[10],
+        "description": result[11],
+        "public": bool(result[12])
+    }

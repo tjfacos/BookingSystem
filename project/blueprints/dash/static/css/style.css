@@ -157,3 +157,7 @@ table tr:hover {background-color: #ddd;}
 #create-event-btn {
     margin: 1rem 0;
 }
+
+.edit-event-btn {
+    width: 50px;
+}

@@ -18,9 +18,24 @@ bp = Blueprint(
     static_folder="static"
 )
 
-@bp.route("/event-details/<event_id>")
-def eventDetails(event_id):
-    return event_id
+@bp.route("/event-details/<event_id>", methods=["GET"])
+def EventDetails(event_id):
+    return render_template("eventDetails.html", info=db.GetEventDetails())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @bp.route("/create-event")
 @login_required
@@ -31,22 +46,25 @@ def CreateEvent():
 @bp.route("/edit-event/<event_id>", methods=["GET", "POST"])
 @login_required
 def EditEvent(event_id):
-    # print(g.user)
     if not db.EventBelongsToUser(event_id, g.user):
-        print("Naughty...")
+        # print("Naughty...")
         return redirect(url_for("home.home"))    
         
 
     if request.method == "POST":
-        # print(request.form)
         info = {}
         public = False
         for item in request.form:
-            print(item)
+            # print(item)
             info[item] = request.form[item]
             match item:
-                case "agelimit" | "attendee_limit":
+                case "agelimit":
                     info[item] = int(info[item])
+                case "attendee_limit":
+                    if request.form[item]:
+                        info[item] = int(info[item])
+                    else:
+                        info[item] = -1
                 case "starttime" | "endtime":
                     info[item] = info[item].replace("T", " ")
                 case "public":
@@ -55,7 +73,7 @@ def EditEvent(event_id):
         info["public"] = public
 
         info["eventID"] = event_id
-        print(info)
+        # print(info)
         db.UpdateEvent(info)
         flash("Updated Successfully!")
 

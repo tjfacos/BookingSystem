@@ -50,11 +50,32 @@
                 <label for="description">Description:</label> <br>
                 <textarea name="description" id="description-box" cols="100" rows="10">{{info["description"]}}</textarea> <br>
                 <label for="attendee_limit">Attendee Limit: </label>
-                <input type="number" name="attendee_limit" value="{{info["attendee_limit"]}}" required> <br>
+                <input type="number" name="attendee_limit" value="{{info["attendee_limit"]}}"> <br>
                 <label for="colour">Accent Colour: </label>
                 <input type="color" name="colour" id="colour" value="{{info["colour"]}}" required oninput="ChangeColour()"> <br>
                 <label for="location">Location: </label>
                 <input type="text" name="location" value="{{info["location"]}}" required> <br>
+                <label for="type">Type: </label>
+                <select name="type" id="type" value="{{info["type"]}}">
+                    <option value="Conference">Conference</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Concert" selected>Concert</option>
+                    <option value="Party">Party</option>
+                    <option value="Show">Show</option>
+                    <option value="Food & Drink">Food & Drink</option>
+                    <option value="Other">Other</option>
+                </select> <br>
+
+                <!-- 
+                    * Conferences
+                    * Seminars
+                    * Concerts
+                    * Parties
+                    * Shows
+                    * Food & Drink
+                    * Other 
+                -->
+
                 <label for="public">Public </label> 
                 <input type="checkbox" name="public" id = "public_checkbox"> <br>
                 <button>Save Changes</button>
@@ -74,6 +95,22 @@
         } else {
             public_checkbox.checked = true;
         }
+
+        type_select = document.getElementById("type")
+        let current = "{{ info['type'] }}"
+        
+        if (current.includes("Food")) {
+            current = "Food & Drink"
+        }
+
+        console.log(current)
+
+        for (let i = 0; i < type_select.options.length; i++){
+            if (type_select[i].text.includes(current)) {
+                type_select.selectedIndex = i
+            }
+        }
+
     </script>
 </body>
 </html>

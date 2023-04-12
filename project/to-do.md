@@ -24,3 +24,14 @@
 
 ## General
 - Emails (Yagmail)
+
+
+
+## Event-Types List
+* Conferences
+* Seminars
+* Concerts
+* Parties
+* Shows
+* Food & Drink
+* Other

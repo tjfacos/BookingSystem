@@ -7,8 +7,9 @@
     <title>Home - Booking System</title>
     <link rel="stylesheet" href="{{ url_for('home.static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+    <script src="{{ url_for("home.static", filename="js/home.js")}}"></script>
 </head>
-<body>
+<body onload="ChangeEventColours()">
     <header>
         <a href="{{url_for("dash.GuestDashboard")}}">
             <div id="account-box">
@@ -19,8 +20,18 @@
         <h1 id="title">Booking System</h1>
     </header>
     <main>
-        <form method="get">
-            <input type="search" name="search-term" id="search" required>
+        <form method="post">
+            <input type="search" name="search-term" id="search" placeholder="Search" value="{{search_term}}">
+            <select name="type" id="type">
+                <option value="" selected>Pick a Type</option>
+                <option value="Conference">Conference</option>
+                <option value="Seminar">Seminar</option>
+                <option value="Concert">Concert</option>
+                <option value="Party">Party</option>
+                <option value="Show">Show</option>
+                <option value="Food & Drink">Food & Drink</option>
+                <option value="Other">Other</option>
+            </select>
             <button>
                 <img id="search-icon" src="{{ url_for("home.static", filename="images/search.svg")}} " alt="Search"/>
             </button>
@@ -32,20 +43,62 @@
             {%endfor%}
             
             {% if events: %}
-                {% for event in events: %}
-                    <div class="event">
-                        <a href="{{url_for("events.eventDetails", event_id=event["id"])}}">
-                            <h2 class="event-title">{{event["name"]}}</h2>
-                        </a>
+                <div id="events-container">
+
+                    {% for event in events: %}
+                    <a class="event-link" href="{{url_for("events.EventDetails", event_id=event["eventID"])}}">
+                    <div class="event {{event["colour"]}}">
+                        <h2 class="event-title">{{event["name"]}}</h2>
+                        {% if event["agelimit"]: %}
+                            <h3 class="agelimit">Age-Limit: {{event["agelimit"]}}</h3>
+                        {% endif %}
+                        <label for="starttime">Starts</label>
+                        <input name="starttime" type="datetime-local" class="starttime time" value="{{event["starttime"]}}" readonly> <br>
+                        <label for="endtime">Ends</label>
+                        <input name="endtime" type="datetime-local" class="endtime time" value="{{event["endtime"]}}" readonly> <br>
+                        <h3 class="location">Location: {{event["location"]}}</h3>
+                        <h3 class="host">Host: {{event["host"]}}</h3>
+                        <h3 class="type">Type: {{event["type"]}}</h3>
                     </div>
-                {%endfor%}
+                    </a>
+                    {%endfor%}
+                </div>
+            {% else: %}
+                <h1 class="message">No Events Matching Search</h1>
             {%endif%}
+
         </section>
 
 
-
+<!-- {'name': 'EAT!!!', 
+    'agelimit': 10, 
+    'starttime': datetime.datetime(2009, 2, 5, 9, 29), 
+    'endtime': datetime.datetime(2009, 2, 19, 8, 8), 
+    'colour': '#8000ff', 
+    'location': 'Up my arse', 
+    'host': "Tom's Wacky Venue", 
+    'type': 'Food & Drink', 
+    'eventID': '95fb0075-d922-11ed-9fc6-fa79966522e3', 
+    'attendee_no': 5} 
+-->
 
 
     </main>
+    <script>
+        type_select = document.getElementById("type")
+        let current = "{{event_type}}"
+        
+        if (current.includes("Food")) {
+            current = "Food & Drink"
+        }
+
+        for (let i = 0; i < type_select.options.length; i++){
+            if (current != "" && type_select[i].text.includes(current)) {
+                console.log("AHHH")
+                type_select.selectedIndex = i
+            }
+        }
+
+    </script>
 </body>
 </html>

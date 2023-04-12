@@ -44,7 +44,8 @@ a {
     padding: 0;
     height: 0;
     width: 0;
-    display: inline-block;
+    text-decoration: none;
+    color: black;
 }
 
 form {
@@ -85,4 +86,50 @@ form button:hover {
 .message {
     text-align: center;
     font-size: 2rem;
+    margin: 1rem auto;
+}
+
+#events {
+    margin: 5rem auto;
+}
+
+select {
+    margin: 1rem auto;
+    width: 100%;
+}
+
+#events-container {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: auto auto auto;
+    margin: auto 10%;
+}
+
+.event {
+    border-radius: 1rem;
+    border: 5px solid var(--colour);
+    transition: box-shadow 200ms ease;
+    padding: 1rem;
+    height: 80%;
+    grid-auto-rows: max-content;
+    margin: 1rem;
+}
+
+.event:hover {
+    box-shadow: 15px 15px var(--colour);
+}
+
+.event input {
+    background: none;
+    border: none;
+    color: black;
+}
+
+.event-link {
+    height: auto;
+    width: auto;
+}
+
+.agelimit {
+    color: red;
 }

@@ -6,6 +6,8 @@
 
 from flask import *
 
+from db import home as db
+
 import functools
 
 bp = Blueprint(
@@ -19,16 +21,23 @@ bp = Blueprint(
 
 @bp.route("/", methods=["GET", "POST"])
 def home():
-    search_term = request.args.get("search-term")
-    if search_term:
-        flash(f"No events found for '{ search_term }'")
-    else:
-        flash("No events found.")
+    terms = {}
+    search_term = ""
+    event_type = ""
 
-    return render_template("home.html", events=[{
-        "name": "Test Event",
-        "id": 1234567
-    }])
+    if request.method == "POST":
+        print("POST")
+        search_term = request.form["search-term"]
+        event_type = request.form["type"]
+
+        if search_term:
+            terms["search_term"] = search_term
+        if event_type:
+            terms["type"] = event_type
+
+    print(terms)
+
+    return render_template("home.html", event_type = event_type, search_term = search_term, events=db.GetHomeContent(**terms))
     
 
 @bp.route("/session")

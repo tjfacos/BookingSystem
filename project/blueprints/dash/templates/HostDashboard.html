@@ -10,7 +10,7 @@
     <script src="{{ url_for("dash.static", filename="js/dash.js")}}"></script>
 
 </head>
-<body onload="ConfigureEventsTable()">
+<body onload="ConfigureEventsTable(); ChangeHostColour()">
     <div id="navbar">
         <div id="home-box">
             <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
@@ -38,7 +38,7 @@
                 <label for="name">Host Name: </label> <br>
                 <input type="text" name="name" value="{{info["name"]}}" required> <br>
                 <label for="colour">Accent Colour: </label>
-                <input type="color" name="colour" value="{{info["colour"]}}">
+                <input type="color" name="colour" id="host_colour" value="{{info["colour"]}}">
                 <label for="location">Location/Address: </label>
                 <input type="text" name="location" value="{{info["location"]}}">
                 <label for="description">Description:</label>
@@ -75,6 +75,7 @@
                     <th>Attendees</th>
                     <th>Colour</th>
                     <th>Location</th>
+                    <th>Type</th>
                     <th>Public</th>
                     <th>Edit Event</th>
                 </tr>
@@ -91,6 +92,7 @@
                     <td class="colour {{event["colour"]}}" id="{{ event["eventID"]+"_colour" }}"></td> 
                     <!-- This will rely on Javascript to work -->
                     <td class="location">{{event["location"]}}</td> 
+                    <td class="type">{{event["type"]}}</td> 
                     <td class="public">{{event["public"]}}</td> 
                     <td><a href="{{ url_for("events.EditEvent", event_id = event["eventID"]) }}"><button class="edit-event-btn">Edit</button></a></td>
                     <!-- Add link to edit event view -->

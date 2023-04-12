@@ -19,7 +19,7 @@ const ConfigureEventsTable = () => {
     console.log("Running...")
     
     let colour_cells = document.getElementsByClassName("colour")
-    console.log(colour_cells)
+    // console.log(colour_cells)
     for (let i = 0; i < colour_cells.length; i++) {
         let cell = colour_cells[i]
         let colour = cell.classList[1]
@@ -35,5 +35,24 @@ const ConfigureEventsTable = () => {
         if (cells[x].innerText == "None") {
             cells[x].innerText = "-"
         }
+
+        if (cells[x].classList.contains("public")){
+            if (cells[x].innerText == "True"){
+                cells[x].innerText = '✅'
+            } else {
+                cells[x].innerText = '❌'
+
+            }
+        }
+    }
+}
+
+const ChangeHostColour = () => {
+    let colour =  document.getElementById("host_colour").value
+    
+    let form_containers = document.getElementsByClassName("form-container")
+    for (let i = 0; i < form_containers.length; i++) {
+        form_containers[i].style.border = `5px solid ${colour}`
+        form_containers[i].style.boxShadow = `15px 15px ${colour}`
     }
 }
