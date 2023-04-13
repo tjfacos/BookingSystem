@@ -35,7 +35,6 @@ def home():
         if event_type:
             terms["type"] = event_type
 
-    # print(terms)
 
     return render_template("home.html", event_type = event_type, search_term = search_term, events=db.GetHomeContent(**terms))
     
@@ -45,5 +44,8 @@ def getSession():
     return str(g.user)
 
 
-# tom@example.com: {'account_id': '6d982c82-d7b9-11ed-9fc6-fa79966522e3', 'user_id': '6d982c93-d7b9-11ed-9fc6-fa79966522e3', 'type': 'host'}
-# test@test.com: {'account_id': 'aecc752a-d7d4-11ed-9fc6-fa79966522e3', 'user_id': 'aecc7536-d7d4-11ed-9fc6-fa79966522e3', 'type': 'host'}
+
+@bp.route("/view-host/<host_id>", methods=["GET"])
+def ViewHost(host_id):
+    info, events = db.GetHostInfo(host_id)
+    return render_template("viewHost.html", info=info, events=events)

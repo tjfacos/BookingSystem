@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="{{ url_for('events.static', filename='css/style.css') }}">
     <script src="{{ url_for("events.static", filename="js/event.js")}}"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+    <script>
+        var place_left = Number("{{info['place_left']}}")
+    </script>
 </head>
 
-<!-- Info conatins: -->
 <!-- name	agelimit	starttime	endtime	  desciption	attendee_limit	attendee_no	colour	location	public -->
 
-<body onload="ChangeEventColour()" class="{{info["colour"]}}">
+<body onload="ChangeEventColour(); CheckPlaces()" class="{{info["colour"]}}">
     <header id="navbar">
         <div id="home-box">
             <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>

@@ -190,3 +190,4 @@ def GetGuestList(event_id):
     }
 
     return info, guestList
+

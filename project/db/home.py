@@ -45,6 +45,7 @@ def GetHomeContent(**kwargs):
                 "endtime": result[3],
                 "colour": result[4],
                 "location": result[5],
+                "hostID": result[6],
                 "host": GetHostName(result[6]),
                 "type": result[7],
                 "eventID": result[8],
@@ -83,6 +84,8 @@ def GetHomeContent(**kwargs):
             if search_term and result[0].lower().find(search_term.lower()) < 0 and result[-1].lower().find(search_term.lower()) < 0:
                 continue
 
+            print(result[6])
+
             events.append({
                 "name": result[0],
                 "agelimit": result[1],
@@ -90,10 +93,38 @@ def GetHomeContent(**kwargs):
                 "endtime": result[3],
                 "colour": result[4],
                 "location": result[5],
+                "hostID": result[6],
                 "host": GetHostName(result[6]),
                 "type": result[7],
                 "eventID": result[8],
                 "attendee_no": result[9]
             })
 
+            
+
     return events
+
+
+def GetHostInfo(id):
+    db, cursor = CreateConnection()
+
+    cursor.execute("SELECT name, colour, description FROM HostUsers WHERE hostID=%s", [id])
+    results = cursor.fetchone()
+    
+    info = {
+        "name": results[0],
+        "colour": results[1],
+        "description": results[2]
+    }
+
+    cursor.execute("SELECT eventID, name, colour FROM Events WHERE public = true AND host = %s", [id])
+    results = cursor.fetchall()
+    eventsList = []
+    for event in results:
+        eventsList.append({
+            "eventID": event[0],
+            "name": event[1],
+            "colour": event[2]
+        })
+
+    return info, eventsList

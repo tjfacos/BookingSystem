@@ -103,14 +103,7 @@ def DeleteGuest():
 
     flash("Success! Guest has been deleted.")
 
-    return redirect(url_for("dash.HostDashboard"))
-
-
-
-
-
-
-
+    return redirect(url_for("events.ViewGuests", event_id=request.args.get("event")))
 
 
 @bp.route("/edit-event/<event_id>", methods=["GET", "POST"])

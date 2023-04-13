@@ -82,7 +82,7 @@
 
                 {% for event in events %}
                  <tr class="event-row">
-                    <td class="name">{{event["name"]}}</td>
+                    <td class="name"><a href="{{url_for("events.EventDetails", event_id=event["eventID"])}}">{{event["name"]}}</a></td>
                     <td class="start-time">{{event["starttime"]}}</td>
                     <td class="end-time">{{event["endtime"]}}</td>
                     <td class="age-limit">{{event["agelimit"]}}</td>

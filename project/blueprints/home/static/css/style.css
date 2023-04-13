@@ -133,3 +133,7 @@ select {
 .agelimit {
     color: red;
 }
+
+a {
+    overflow: visible;
+}

@@ -9,3 +9,10 @@ const ChangeEventColour = () => {
     let colour = body.classList[0]
     document.querySelector(":root").style.setProperty('--colour', colour)
 }
+
+const CheckPlaces = () => {
+    if (!(place_left > 0)) {
+        document.getElementById("book-btn").title = "Sorry! This event is already full"
+        document.getElementById("book-btn").disabled = true
+    }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Host - {{ info["name"] }}</title>
+    <link rel="stylesheet" href="{{ url_for('home.static', filename='css/host.css') }}">
+    <script src="{{ url_for("home.static", filename="js/host.js")}}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+</head>
+<body class="{{info["colour"]}}" onload="ChangeColours()">
+    <div id="navbar">
+        <div id="home-box">
+            <h2> <a href="{{ url_for("home.home") }}"> Home </a></h2>
+        </div>
+
+        <div id="page-name">
+            <h1 id="title">Host - {{info["name"]}}</h1>
+        </div>
+
+        <div id="logout-box">
+            <h2> <a href="{{ url_for("auth.sign_in") }}"> Sign In </a></h2>
+        </div>
+
+    </div>
+    
+    <main>
+        
+        {% for message in get_flashed_messages() %}
+        <h2 class="server-message">{{ message }}</h2>
+        {% endfor %}
+
+        <div id="information-container">
+            <h2>Description</h2>
+            <p class="description">{{info["description"]}}</p>
+            <h2>Events</h2>
+            {% if not events: %}
+            <h3>This host doesn't have any events yet. When they do, they'll appear here.</h3>
+            {%else: %}
+            <ul class="eventList">
+                {% for event in events %}
+                    <li class="{{event["colour"]}}">
+                        <h3><a href="{{url_for("events.EventDetails", event_id=event["eventID"])}}">{{event["name"]}}</a></h3>
+                    </li>
+                {% endfor %}
+            </ul>
+            {%endif%}
+        </div>
+
+
+    </main>
+</body>
+</html>

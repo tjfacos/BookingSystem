@@ -46,21 +46,24 @@
                 <div id="events-container">
 
                     {% for event in events: %}
-                    <a class="event-link" href="{{url_for("events.EventDetails", event_id=event["eventID"])}}">
+                    
                     <div class="event {{event["colour"]}}">
-                        <h2 class="event-title">{{event["name"]}}</h2>
-                        {% if event["agelimit"]: %}
-                            <h3 class="agelimit">Age-Limit: {{event["agelimit"]}}</h3>
-                        {% endif %}
-                        <label for="starttime">Starts</label>
-                        <input name="starttime" type="datetime-local" class="starttime time" value="{{event["starttime"]}}" readonly> <br>
-                        <label for="endtime">Ends</label>
-                        <input name="endtime" type="datetime-local" class="endtime time" value="{{event["endtime"]}}" readonly> <br>
-                        <h3 class="location">Location: {{event["location"]}}</h3>
-                        <h3 class="host">Host: {{event["host"]}}</h3>
-                        <h3 class="type">Type: {{event["type"]}}</h3>
-                    </div>
-                    </a>
+                            <a class="event-link" href="{{url_for("events.EventDetails", event_id=event["eventID"])}}">
+                            <h2 class="event-title">{{event["name"]}}</h2>
+                            {% if event["agelimit"]: %}
+                                <h3 class="agelimit">Age-Limit: {{event["agelimit"]}}</h3>
+                            {% endif %}
+                            <label for="starttime">Starts</label>
+                            <input name="starttime" type="datetime-local" class="starttime time" value="{{event["starttime"]}}" readonly> <br>
+                            <label for="endtime">Ends</label>
+                            <input name="endtime" type="datetime-local" class="endtime time" value="{{event["endtime"]}}" readonly> <br>
+                            <h3 class="location">Location: {{event["location"]}}</h3>
+                            <h3 class="host">Host:<a href="{{url_for("home.ViewHost", host_id=event["hostID"] )}}">{{event["host"]}}</a></h3>
+                            <h3 class="type">Type: {{event["type"]}}</h3>
+                            <!-- {{event["hostID"]}} -->
+                            </a>
+                        </div>
+                    
                     {%endfor%}
                 </div>
             {% else: %}

@@ -185,25 +185,25 @@ button:hover {
 
 /* View Guests */
 
-table {
+.guestListTable {
     width: 100%;
     border-collapse: collapse;
 }
 
-table tr {
+.guestListTable tr {
     height: 3rem;
 }
 
-table td, table th {
+.guestListTable td, .guestListTable th {
     border: 2px solid gray;
     padding: 8px;
     text-align: center;
 }
 
-table tr:nth-child(even){background-color: #f2f2f2;}
-table tr:nth-child(odd){background-color: #999999;}
+.guestListTable tr:nth-child(even){background-color: #f2f2f2;}
+.guestListTable tr:nth-child(odd){background-color: #999999;}
 
-table tr:hover {background-color: #ddd;}
+.guestListTable tr:hover {background-color: #ddd;}
 
 
 .guestListTable {
