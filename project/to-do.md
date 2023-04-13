@@ -35,3 +35,6 @@
 * Shows
 * Food & Drink
 * Other
+
+
+DELETE FROM Tickets WHERE event IN (SELECT eventID FROM Events WHERE host = %s)

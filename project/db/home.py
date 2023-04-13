@@ -84,7 +84,6 @@ def GetHomeContent(**kwargs):
             if search_term and result[0].lower().find(search_term.lower()) < 0 and result[-1].lower().find(search_term.lower()) < 0:
                 continue
 
-            # print(result[6])
 
             events.append({
                 "name": result[0],

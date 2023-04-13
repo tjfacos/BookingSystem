@@ -57,14 +57,22 @@ def DeleteUser(user):
     type = user["type"]
 
     if type == "host":
-        sql = "DELETE FROM HostUsers WHERE hostID = %s"
+        cursor.execute("""DELETE FROM HostUsers WHERE hostID = %s; """, [user_id])
+        cursor.execute("DELETE FROM Tickets WHERE event IN (SELECT eventID FROM Events WHERE host = %s)", [user_id], multi=True); 
+        cursor.execute("""DELETE FROM Events WHERE host = %s""", [user_id])
     else:
-        sql = "DELETE FROM GuestUsers WHERE guestID = %s"
+        cursor.execute("DELETE FROM GuestUsers WHERE guestID = %s", [user_id])
 
-    cursor.execute(sql, [user_id])
     cursor.execute("DELETE FROM Accounts WHERE AccountID = %s", [account_id])
 
     db.commit()
+
+
+
+
+
+
+
 
 
 def GetGuestTickets(user):

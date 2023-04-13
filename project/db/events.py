@@ -191,3 +191,10 @@ def GetGuestList(event_id):
 
     return info, guestList
 
+def CancelEvent(id):
+    db, cursor = CreateConnection()
+    
+    cursor.execute("""DELETE FROM Tickets WHERE event = %s""", [id])
+    cursor.execute("""DELETE FROM Events WHERE eventID = %s""", [id])
+
+    db.commit()

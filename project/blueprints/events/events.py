@@ -139,7 +139,11 @@ def EditEvent(event_id):
         flash("Updated Successfully!")
 
 
-
-    return render_template("editEvent.html", info = db.GetEvent(event_id))
+    return render_template("editEvent.html", info = db.GetEvent(event_id), event_id = event_id)
     # name	agelimit	starttime	endtime	desciption	attendee_limit	attendee_no	colour	location	public
     
+@bp.route("/cancel/<id>", methods=["POST"])
+def CancelEvent(id):
+    db.CancelEvent(id)
+    flash("Event sucessfully deleted!!!")
+    return redirect(url_for("dash.HostDashboard"))
