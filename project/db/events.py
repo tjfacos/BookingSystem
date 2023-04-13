@@ -83,7 +83,7 @@ def GetHostEventsList(user) -> list[dict]:
     )
 
     results = cursor.fetchall()
-    print(results)
+    # print(results)
     events = []
     for result in results:
         events.append({

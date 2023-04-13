@@ -103,8 +103,8 @@ def GetGuestTickets(user):
     return events
 
 def DeleteTicket(ticket, event):
-    print("DELETEING TICKET")
-    print(ticket, event)
+    # print("DELETEING TICKET")
+    # print(ticket, event)
     
     db, cursor = CreateConnection()
     

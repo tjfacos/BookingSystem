@@ -96,8 +96,8 @@ def ViewGuests(event_id):
 @login_required
 def DeleteGuest():
     
-    print(request.args.get("ticket"))
-    print(request.args.get("event"))
+    # print(request.args.get("ticket"))
+    # print(request.args.get("event"))
 
     DeleteTicket(request.args.get("ticket"), request.args.get("event"))
 
