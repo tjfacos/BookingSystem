@@ -49,8 +49,12 @@ def BookEvent(event_id):
             if "name" in field:
                 names.append(request.form[field])
         
-        db.CreateTicket(event_id, g.user, ', '.join(names))
-        flash("Success! Your Tickets have been booked!")
+        if info["place_left"] < len(names):
+            flash("Sorry! Not enough space for your party")
+        else:
+            db.CreateTicket(event_id, g.user, names)
+            flash("Success! Your Tickets have been booked!")
+        
         return redirect(url_for("dash.GuestDashboard"))
 
     return render_template("bookEvent.html", info=info, user=user)

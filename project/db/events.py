@@ -156,17 +156,18 @@ def GetEventDetails(id):
 
     return info
 
-def CreateTicket(eventID: str, user, names: str):
+def CreateTicket(eventID: str, user, names: list[str]):
+    db, cursor = CreateConnection()
+    
     sql = """
     INSERT INTO Tickets
     VALUES (UUID(), %s, %s, %s)
     """
-    values = (user["user_id"] ,eventID, names)
+    for name in names:
+        values = (user["user_id"] ,eventID, name)
+        cursor.execute(sql, values)
 
-    db, cursor = CreateConnection()
-
-    cursor.execute(sql, values)
-    cursor.execute("UPDATE Events SET attendee_no = attendee_no + 1 WHERE eventID = %s", [eventID])
+    cursor.execute("UPDATE Events SET attendee_no = attendee_no + %s WHERE eventID = %s", [len(names), eventID])
 
     db.commit()
 
