@@ -78,7 +78,7 @@
                     <td class="start-time">{{ticket["starttime"]}}</td>
                     <td class="end-time">{{ticket["endtime"]}}</td>
                     <td class="host">{{ticket["host"]}}</td>
-                    <td class="guest-number">{{ticket["guestNames"]}}</td>
+                    <td class="guest-number">{{ticket["guestName"]}}</td>
                     <td class="location">{{ticket["location"]}}</td>
                     <td class="type">{{ticket["type"]}}</td>
                     <td><form method="post" action="{{url_for("dash.CancelTicket", ticket=ticket["ticketID"], event=ticket["eventID"])}}"><button class="cancel-ticket-btn">Cancel</button></form></td>

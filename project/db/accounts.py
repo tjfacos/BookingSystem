@@ -81,7 +81,7 @@ def GetGuestTickets(user):
 
     events = []
 
-    sql = "SELECT ticketID, event, guestNames FROM Tickets WHERE purchaser = %s"
+    sql = "SELECT ticketID, event, guestName FROM Tickets WHERE purchaser = %s"
     cursor.execute(sql, [user_id])
     results = cursor.fetchall()
     
@@ -98,7 +98,7 @@ def GetGuestTickets(user):
         events.append({
             "ticketID": result[0],
             "eventID": result[1],
-            "guestNames": result[2],
+            "guestName": result[2],
             "name": event[0],
             "starttime": event[1],
             "endtime": event[2],
