@@ -57,7 +57,7 @@
             <label for="endtime">Ends</label>
             <input name="endtime" type="datetime-local" class="endtime time" value="{{info["endtime"]}}" readonly> <br>
             <h3 class="location">Location: {{info["location"]}}</h3>
-            <h3 class="host">Host: {{info["host"]}}</h3>
+            <h3 class="host">Host: <a href="{{url_for('home.ViewHost', host_id=info['hostID'] )}}"> {{info["host"]}} </a> </h3>
             <h3 class="type">Type: {{info["type"]}}</h3>
             <h3>Description</h3>
             <p class="description">{{info["description"]}}</p>

@@ -145,6 +145,7 @@ def GetEventDetails(id):
         "colour": result[4],
         "location": result[5],
         "host": GetHostName(result[6]),
+        "hostID": result[6],
         "type": result[7],
         "eventID": result[8],
         "description": result[11],
