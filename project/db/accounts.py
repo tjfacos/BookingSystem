@@ -81,31 +81,28 @@ def GetGuestTickets(user):
 
     events = []
 
-    sql = "SELECT ticketID, event, guestName FROM Tickets WHERE purchaser = %s"
-    cursor.execute(sql, [user_id])
+    cursor.execute("""
+    SELECT ticketID, event, guestName, name, starttime, endtime, colour, location, host, type
+    FROM Tickets INNER JOIN Events ON Tickets.event = Events.eventID
+    WHERE Tickets.purchaser = %s
+    """, [user_id])
+
+    # sql = "SELECT ticketID, event, guestName FROM Tickets WHERE purchaser = %s"
+    # cursor.execute(sql, [user_id])
     results = cursor.fetchall()
     
     for result in results:
-        cursor.execute(
-            """
-            SELECT name, starttime, endtime, colour, location, host, type
-            FROM Events
-            WHERE eventID = %s
-            """, [ result[1] ]
-        )
-        event = cursor.fetchone()
-
         events.append({
             "ticketID": result[0],
             "eventID": result[1],
             "guestName": result[2],
-            "name": event[0],
-            "starttime": event[1],
-            "endtime": event[2],
-            "colour": event[3],
-            "location": event[4],
-            "host": GetHostName(event[5]),
-            "type": event[6]
+            "name": result[3],
+            "starttime": result[4],
+            "endtime": result[5],
+            "colour": result[6],
+            "location": result[7],
+            "host": GetHostName(result[8]),
+            "type": result[9]
         })
 
     return events
