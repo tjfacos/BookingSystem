@@ -41,11 +41,13 @@
             <tr>
                 <th>GuestID</th>
                 <th>Guests</th>
+                <th>Email</th>
             </tr>
             {% for ticket in guestList %}
             <tr>
                 <td>{{ticket["ticketID"]}}</td>
                 <td>{{ticket["guestName"]}}</td>
+                <td>{{ticket["email"]}}</td>
                 <td><form method="post" action="{{url_for("events.DeleteGuest", ticket=ticket["ticketID"], event=info["eventID"])}}"><button>Delete</button></form></td>
             </tr>
             {%endfor%}

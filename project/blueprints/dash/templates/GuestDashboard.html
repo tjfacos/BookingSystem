@@ -63,6 +63,7 @@
             
             <table id="tickets-table">
                 <tr>
+                    <th>Reference</th>
                     <th>Name</th>
                     <th>Starts</th>
                     <th>Ends</th>
@@ -74,6 +75,7 @@
                 </tr>
                 {% for ticket in tickets %}
                 <tr class="ticket-row {{ticket["colour"]}}">
+                    <td class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ticket["ticketID"]}}" alt="{{ticket["ticketID"]}}"></td>
                     <td class="name">{{ticket["name"]}}</td>
                     <td class="start-time">{{ticket["starttime"]}}</td>
                     <td class="end-time">{{ticket["endtime"]}}</td>

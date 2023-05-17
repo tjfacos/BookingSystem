@@ -148,6 +148,8 @@ def EditEvent(event_id):
     
 @bp.route("/cancel/<id>", methods=["POST"])
 def CancelEvent(id):
-    db.CancelEvent(id)
-    flash("Event sucessfully deleted!!!")
+    if db.EventBelongsToUser(id, g.user):
+        db.CancelEvent(id)
+        flash("Event sucessfully deleted!!!")
+    
     return redirect(url_for("dash.HostDashboard"))

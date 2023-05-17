@@ -175,13 +175,21 @@ def CreateTicket(eventID: str, user, names: list[str]):
 def GetGuestList(event_id):
     db, cursor = CreateConnection()
 
-    cursor.execute("SELECT ticketID, guestName FROM Tickets WHERE event = %s", [event_id])
+    cursor.execute("""
+        SELECT ticketID, guestName, Accounts.email FROM Tickets 
+        INNER JOIN GuestUsers ON GuestUsers.guestID = Tickets.purchaser
+        INNER JOIN Accounts ON GuestUsers.account = Accounts.AccountID
+        WHERE event = %s
+        """,
+    [event_id])
     results = cursor.fetchall()
+    print(results)
     guestList = []
     for guest in results:
         guestList.append({
             "ticketID": guest[0],
-            "guestName": guest[1]
+            "guestName": guest[1],
+            "email": guest[2]
         })
     
     cursor.execute("SELECT name, colour FROM Events WHERE eventID = %s", [event_id])
